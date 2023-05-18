@@ -30,8 +30,11 @@ export class CheckoutsTableComponent implements OnInit {
 
   // making the dataSource an array of the checkout objects to populate the mat table
   ngOnInit(): void {
-    this.updateTable();
-    this.allCheckouts$ = this.checkoutService.getCheckouts({pageIndex: 0, pageSize: this.checkoutsLength});
+    this.checkoutService.getCheckouts(this.pageInfo).subscribe(checkouts => {
+        this.dataSource.data = checkouts.content;
+        this.checkoutsLength = checkouts.totalElements;
+        this.allCheckouts$ = this.checkoutService.getCheckouts({pageIndex: 0, pageSize: this.checkoutsLength});
+    })
   }
 
   // pagination using the api, changing page index and size to the paginator values

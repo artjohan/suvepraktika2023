@@ -25,4 +25,8 @@ export class BookDetailComponent implements OnInit {
       .pipe(switchMap(id => this.bookService.getBook(id)))
   }
 
+  removeBook(bookId: string): void {
+    this.bookService.deleteBook(bookId);
+  }
+
 }

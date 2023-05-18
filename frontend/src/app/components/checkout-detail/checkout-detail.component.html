@@ -1,1 +1,8 @@
-<pre>{{checkout$ | async | json}}</pre>
+<div *ngIf="(checkout$ | async) as checkout">
+  <mat-card>
+    <mat-card-title [routerLink]="['/books', checkout.borrowedBook.id]">{{checkout.borrowedBook.title}}</mat-card-title>
+    <mat-card-content>Currently borrowed by: {{checkout.borrowerFirstName}} {{checkout.borrowerLastName}}</mat-card-content>
+    <mat-card-content>Checked out: {{checkout.checkedOutDate}}</mat-card-content>
+    <mat-card-content>Due: {{checkout.dueDate}}</mat-card-content>
+  </mat-card>
+</div>

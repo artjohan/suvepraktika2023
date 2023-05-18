@@ -1,0 +1,40 @@
+mat-card {
+  margin-top:100px;
+  width: fit-content;
+  text-align: center;
+  padding: 30px;
+}
+
+mat-card-content {
+  margin: 20px;
+  font-size:20px;
+}
+
+mat-card-title {
+  font-size:50px;
+  margin-bottom: 30px;
+  line-height: 1em
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button {
+  border-radius: 10px;
+  border: solid 3px black;
+  transition: transform .2s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

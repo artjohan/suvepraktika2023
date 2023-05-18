@@ -1,12 +1,13 @@
 <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]"
-               [pageSize]="20"
+               [pageSize]="pageInfo.pageSize"
+               [pageIndex]="pageInfo.pageIndex"
                [length]="checkoutsLength"
                (page)="pagination($event)"
                showFirstLastButtons
                aria-label="Select page of checkouts table">
 </mat-paginator>
-
-<div *ngIf="allCheckouts$ | async">
+<div *ngIf="(allCheckouts$ | async) as checkouts">
+  <app-searchbar [allCheckouts]="checkouts.content"></app-searchbar>
   <table mat-table [dataSource]="dataSource"
          matSort
          (matSortChange)="sortTable($event)"
@@ -43,3 +44,12 @@
         *matRowDef="let row; columns: columnHeaders;"></tr>
   </table>
 </div>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]"
+               [pageSize]="pageInfo.pageSize"
+               [pageIndex]="pageInfo.pageIndex"
+               [length]="checkoutsLength"
+               (page)="pagination($event)"
+               showFirstLastButtons
+               aria-label="Select page of checkouts table">
+</mat-paginator>

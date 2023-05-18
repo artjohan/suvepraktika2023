@@ -30,8 +30,11 @@ export class BooksTableComponent implements OnInit {
 
   // making the dataSource an array of the book objects to populate the mat table
   ngOnInit(): void {
-    this.updateTable();
-    this.allBooks$ = this.bookService.getBooks({pageIndex: 0, pageSize: this.booksLength});
+    this.bookService.getBooks(this.pageInfo).subscribe(books => {
+        this.dataSource.data = books.content;
+        this.booksLength = books.totalElements;
+        this.allBooks$ = this.bookService.getBooks({pageIndex: 0, pageSize: this.booksLength});
+    })
   }
 
   // pagination using the api, changing page index and size to the paginator values

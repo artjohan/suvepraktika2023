@@ -1,0 +1,27 @@
+mat-card {
+  margin-top:100px;
+  width: 50%;
+  text-align: center;
+  padding: 30px;
+}
+
+mat-card-content {
+  margin: 20px;
+  font-size:20px;
+}
+
+mat-card-title {
+  font-size:50px;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+
+mat-card-title:hover {
+  color: grey;
+}
+
+div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

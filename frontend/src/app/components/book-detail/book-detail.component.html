@@ -1,1 +1,16 @@
-<pre>{{book$ | async | json}}</pre>
+<div *ngIf="(book$ | async) as book">
+  <mat-card>
+    <mat-card-title>{{book.title}}</mat-card-title>
+    <mat-card-content>Author: {{book.author}}</mat-card-content>
+    <mat-card-content>Genre: {{book.genre}}</mat-card-content>
+    <mat-card-content>Year: {{book.year}}</mat-card-content>
+    <mat-card-content>Added to library: {{book.added}}</mat-card-content>
+    <mat-card-content>Times checked out: {{book.checkOutCount}}</mat-card-content>
+    <mat-card-content>Status: {{book.status}}</mat-card-content>
+    <mat-card-content *ngIf="book.dueDate">Due: {{book.dueDate}}</mat-card-content>
+    <mat-card-actions>
+      <button (click)="removeBook(book.id)" mat-button>REMOVE</button>
+      <button *ngIf="book.status==='AVAILABLE'" mat-button>BORROW</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
