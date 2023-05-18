@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Page, PageRequest } from '../../models/page';
 import { Book } from '../../models/book';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatSort, Sort} from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({
@@ -23,36 +23,36 @@ export class BooksTableComponent implements OnInit {
     direction: ''
   }
 
-  allBooks$!: Observable<Page<Book>>
-  booksLength?: number
-  dataSource = new MatTableDataSource<Book>()
-  columnHeaders: string[] = ['title', 'author', 'year', 'genre']
+  allBooks$!: Observable<Page<Book>>;
+  booksLength?: number;
+  dataSource = new MatTableDataSource<Book>();
+  columnHeaders: string[] = ['title', 'author', 'year', 'genre', 'status'];
 
   // making the dataSource an array of the book objects to populate the mat table
   ngOnInit(): void {
-    this.updateTable()
-    this.allBooks$ = this.bookService.getBooks({pageIndex: 0, pageSize: this.booksLength})
+    this.updateTable();
+    this.allBooks$ = this.bookService.getBooks({pageIndex: 0, pageSize: this.booksLength});
   }
 
   // pagination using the api, changing page index and size to the paginator values
   pagination(event:PageEvent): void {
-    this.pageInfo.pageIndex = event.pageIndex
-    this.pageInfo.pageSize = event.pageSize
-    this.updateTable()
+    this.pageInfo.pageIndex = event.pageIndex;
+    this.pageInfo.pageSize = event.pageSize;
+    this.updateTable();
   }
 
   // sorting using the api, changing page sort and direction to the sorter values
   sortTable(event:Sort): void {
-    this.pageInfo.sort = event.active
-    this.pageInfo.direction = event.direction
-    this.updateTable()
+    this.pageInfo.sort = event.active;
+    this.pageInfo.direction = event.direction;
+    this.updateTable();
   }
 
   // updates the table by updating the dataSource according to the pageInfo criteria
   updateTable(): void {
     this.bookService.getBooks(this.pageInfo).subscribe(books => {
-      this.dataSource.data = books.content
-      this.booksLength = books.totalElements
+      this.dataSource.data = books.content;
+      this.booksLength = books.totalElements;
     })
   }
 }
