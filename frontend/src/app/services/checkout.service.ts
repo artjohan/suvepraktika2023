@@ -45,7 +45,13 @@ export class CheckoutService {
 
   deleteCheckout(checkoutId: string): Observable<void> {
     const url = this.baseUrl + '/checkout';
-    const params = new HttpParams().set('checkOutId', checkoutId);
+    const params = new HttpParams().set('id', checkoutId);
+    return this.http.delete<void>(url, {params});
+  }
+
+  deleteCheckoutsByBookId(bookId: string): Observable<void> {
+    const url = this.baseUrl + '/checkout-by-book-id';
+    const params = new HttpParams().set('id', bookId);
     return this.http.delete<void>(url, {params});
   }
 

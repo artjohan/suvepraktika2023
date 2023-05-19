@@ -9,7 +9,7 @@
     <mat-card-content>Status: {{book.status}}</mat-card-content>
     <mat-card-content *ngIf="book.dueDate">Due: {{book.dueDate}}</mat-card-content>
     <mat-card-actions>
-      <button (click)="removeBook(book.id)" mat-button>REMOVE</button>
+      <button (click)="removeBook(book)" mat-button>REMOVE</button>
       <button *ngIf="book.status==='AVAILABLE'" (click)="openCheckoutDialog(book)" mat-button>BORROW</button>
     </mat-card-actions>
   </mat-card>

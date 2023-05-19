@@ -24,7 +24,7 @@ export class BooksTableComponent implements OnInit {
     searchTerm: ''
   }
 
-  allBooks$!: Observable<Page<Book>>;
+  books$!: Observable<Page<Book>>;
   booksLength?: number;
   dataSource = new MatTableDataSource<Book>();
   columnHeaders: string[] = ['title', 'author', 'year', 'genre', 'status'];
@@ -34,7 +34,7 @@ export class BooksTableComponent implements OnInit {
     this.bookService.getBooks(this.pageInfo).subscribe(books => {
         this.dataSource.data = books.content;
         this.booksLength = books.totalElements;
-        this.allBooks$ = this.bookService.getBooks({pageIndex: 0, pageSize: this.booksLength});
+        this.books$ = this.bookService.getBooks(this.pageInfo);
     })
   }
 
@@ -59,4 +59,9 @@ export class BooksTableComponent implements OnInit {
       this.booksLength = books.totalElements;
     })
   }
+
+  searchBooks(searchValue: string): void {
+      this.pageInfo.searchTerm = searchValue;
+      this.updateTable();
+    }
 }

@@ -20,7 +20,8 @@ export class CheckoutsTableComponent implements OnInit {
       pageIndex: 0,
       pageSize: 20,
       sort: '',
-      direction: ''
+      direction: '',
+      searchTerm: ''
   }
 
   allCheckouts$!: Observable<Page<Checkout>>;
@@ -38,24 +39,29 @@ export class CheckoutsTableComponent implements OnInit {
   }
 
   // pagination using the api, changing page index and size to the paginator values
-    pagination(event:PageEvent): void {
-      this.pageInfo.pageIndex = event.pageIndex;
-      this.pageInfo.pageSize = event.pageSize;
-      this.updateTable();
-    }
+  pagination(event:PageEvent): void {
+    this.pageInfo.pageIndex = event.pageIndex;
+    this.pageInfo.pageSize = event.pageSize;
+    this.updateTable();
+  }
 
-    // sorting using the api, changing page sort and direction to the sorter values
-    sortTable(event:Sort): void {
-      this.pageInfo.sort = event.active;
-      this.pageInfo.direction = event.direction;
-      this.updateTable();
-    }
+  // sorting using the api, changing page sort and direction to the sorter values
+  sortTable(event:Sort): void {
+    this.pageInfo.sort = event.active;
+    this.pageInfo.direction = event.direction;
+    this.updateTable();
+  }
 
-    // updates the table by updating the dataSource according to the pageInfo criteria
-    updateTable(): void {
-      this.checkoutService.getCheckouts(this.pageInfo).subscribe(checkouts => {
-        this.dataSource.data = checkouts.content;
-        this.checkoutsLength = checkouts.totalElements;
-      })
-    }
+  // updates the table by updating the dataSource according to the pageInfo criteria
+  updateTable(): void {
+    this.checkoutService.getCheckouts(this.pageInfo).subscribe(checkouts => {
+      this.dataSource.data = checkouts.content;
+      this.checkoutsLength = checkouts.totalElements;
+    })
+  }
+
+  searchCheckouts(searchValue: string): void {
+    this.pageInfo.searchTerm = searchValue;
+    this.updateTable();
+  }
 }

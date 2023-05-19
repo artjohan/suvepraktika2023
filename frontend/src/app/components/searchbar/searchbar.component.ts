@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input, Optional } from '@angular/core';
 import { BooksTableComponent } from '../books-table/books-table.component';
+import { CheckoutsTableComponent } from '../checkouts-table/checkouts-table.component';
 import { Book } from '../../models/book';
 
 @Component({
@@ -9,13 +10,17 @@ import { Book } from '../../models/book';
 })
 export class SearchbarComponent{
 
+  @Input() searchType: string = ""
   searchValue: string = "";
 
-  constructor(private booksTableComponent: BooksTableComponent) { }
+  constructor(@Optional() private booksTableComponent: BooksTableComponent, @Optional() private checkoutsTableComponent: CheckoutsTableComponent) { }
 
-  // adds the searchValue to the request params, then calls updateTable() to get filtered results
+  // calls the methods of each respective class with the searchValue
   search(): void {
-    this.booksTableComponent.pageInfo.searchTerm = this.searchValue;
-    this.booksTableComponent.updateTable();
+    if(this.searchType === "books") {
+        this.booksTableComponent.searchBooks(this.searchValue)
+    } else if(this.searchType === "checkouts") {
+        this.checkoutsTableComponent.searchCheckouts(this.searchValue)
+    }
   }
 }

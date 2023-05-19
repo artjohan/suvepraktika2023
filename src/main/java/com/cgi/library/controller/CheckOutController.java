@@ -1,6 +1,5 @@
 package com.cgi.library.controller;
 
-import com.cgi.library.model.BookStatus;
 import com.cgi.library.model.CheckOutDTO;
 import com.cgi.library.service.CheckOutService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,9 @@ public class CheckOutController {
     private CheckOutService checkOutService;
 
     @GetMapping(value = "checkouts")
-    public ResponseEntity<Page<CheckOutDTO>> getCheckOuts(Pageable pageable) {
-        return ResponseEntity.ok(checkOutService.getCheckOuts(pageable));
+    public ResponseEntity<Page<CheckOutDTO>> getCheckOuts(Pageable pageable, @RequestParam(required = false) String search) {
+        Page<CheckOutDTO> checkouts = checkOutService.getCheckOuts(pageable, search);
+        return ResponseEntity.ok(checkouts);
     }
 
     @GetMapping(value = "checkout")
@@ -43,6 +43,12 @@ public class CheckOutController {
     @DeleteMapping(value = "checkout")
     public ResponseEntity<String> deleteCheckOut(@RequestParam(value = "id") UUID checkOutId) {
         checkOutService.deleteCheckOut(checkOutId);
+        return ResponseEntity.ok("");
+    }
+
+    @DeleteMapping(value = "checkout-by-book-id")
+    public ResponseEntity<String> deleteCheckoutsByBookId(@RequestParam(value = "id") UUID bookId) {
+        checkOutService.deleteCheckoutsByBookId(bookId);
         return ResponseEntity.ok("");
     }
 }

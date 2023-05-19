@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { BookService } from '../../services/book.service';
+import { CheckoutService } from '../../services/checkout.service';
 import { Book } from '../../models/book';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -18,6 +19,7 @@ export class BookDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
+    private checkoutService: CheckoutService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
   ) { }
@@ -28,9 +30,11 @@ export class BookDetailComponent implements OnInit {
       .pipe(switchMap(id => this.bookService.getBook(id)))
   }
 
-  // deletes book from database
-  removeBook(bookId: string): void {
-    this.bookService.deleteBook(bookId).subscribe();
+  // deletes book from database, first removing all instances of the book from the checkouts table, then removing it entirely
+  removeBook(book: Book): void {
+    this.checkoutService.deleteCheckoutsByBookId(book.id)
+        .pipe(
+         switchMap(() => this.bookService.deleteBook(book.id))).subscribe();
   }
 
   // opens a dialog box asking for additional checkout information

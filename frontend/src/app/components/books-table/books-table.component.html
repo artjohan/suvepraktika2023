@@ -1,13 +1,13 @@
-<mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]"
-               [pageSize]="pageInfo.pageSize"
-               [pageIndex]="pageInfo.pageIndex"
-               [length]="booksLength"
-               (page)="pagination($event)"
-               showFirstLastButtons
-               aria-label="Select page of books table">
-</mat-paginator>
-<div *ngIf="(allBooks$ | async) as books">
-  <app-searchbar></app-searchbar>
+<div *ngIf="(books$ | async) as books">
+  <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]"
+                 [pageSize]="pageInfo.pageSize"
+                 [pageIndex]="pageInfo.pageIndex"
+                 [length]="booksLength"
+                 (page)="pagination($event)"
+                 showFirstLastButtons
+                 aria-label="Select page of books table">
+  </mat-paginator>
+  <app-searchbar [searchType]="'books'"></app-searchbar>
   <table mat-table [dataSource]="dataSource"
          matSort
          (matSortChange)="sortTable($event)"
@@ -43,13 +43,12 @@
         [routerLink]="['/books', row.id]"
         *matRowDef="let row; columns: columnHeaders;"></tr>
   </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]"
+                 [pageSize]="pageInfo.pageSize"
+                 [pageIndex]="pageInfo.pageIndex"
+                 [length]="booksLength"
+                 (page)="pagination($event)"
+                 showFirstLastButtons
+                 aria-label="Select page of books table">
+  </mat-paginator>
 </div>
-
-<mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]"
-               [pageSize]="pageInfo.pageSize"
-               [pageIndex]="pageInfo.pageIndex"
-               [length]="booksLength"
-               (page)="pagination($event)"
-               showFirstLastButtons
-               aria-label="Select page of books table">
-</mat-paginator>

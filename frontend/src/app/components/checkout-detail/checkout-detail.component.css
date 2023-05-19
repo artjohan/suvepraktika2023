@@ -14,6 +14,7 @@ mat-card-title {
   font-size:50px;
   margin-bottom: 30px;
   cursor: pointer;
+  line-height: 1em;
 }
 
 mat-card-title:hover {
