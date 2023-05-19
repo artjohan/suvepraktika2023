@@ -7,7 +7,7 @@
                aria-label="Select page of books table">
 </mat-paginator>
 <div *ngIf="(allBooks$ | async) as books">
-  <app-searchbar [allBooks]="books.content"></app-searchbar>
+  <app-searchbar></app-searchbar>
   <table mat-table [dataSource]="dataSource"
          matSort
          (matSortChange)="sortTable($event)"

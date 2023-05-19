@@ -1,8 +1,6 @@
-import { Component, Input, Optional } from '@angular/core';
+import { Component } from '@angular/core';
 import { BooksTableComponent } from '../books-table/books-table.component';
-import { CheckoutsTableComponent } from '../checkouts-table/checkouts-table.component';
 import { Book } from '../../models/book';
-import { Checkout } from '../../models/checkout';
 
 @Component({
   selector: 'app-searchbar',
@@ -11,19 +9,12 @@ import { Checkout } from '../../models/checkout';
 })
 export class SearchbarComponent{
 
-  @Input() allBooks?: Book[];
-  @Input() allCheckouts?: Checkout[];
   searchValue: string = "";
 
-  constructor(@Optional() private booksTableComponent: BooksTableComponent, @Optional() private checkoutsTableComponent: CheckoutsTableComponent) { }
+  constructor(private booksTableComponent: BooksTableComponent) { }
 
   search(): void {
-    if(this.allBooks) {
-        const filteredData = this.allBooks.filter(book => book.title.toLowerCase().includes(this.searchValue.toLowerCase()));
-        console.log(filteredData);
-    } else if(this.allCheckouts) {
-        const filteredData = this.allCheckouts.filter(checkout => checkout.borrowedBook.title.toLowerCase().includes(this.searchValue.toLowerCase()));
-        console.log(filteredData);
-    }
+    this.booksTableComponent.pageInfo.searchTerm = this.searchValue;
+    this.booksTableComponent.updateTable();
   }
 }

@@ -19,25 +19,33 @@ export class BookService {
   }
 
   getBooks(filter: Partial<PageRequest>): Observable<Page<Book>> {
-    const url = this.baseUrl + '/getBooks';
+    const url = this.baseUrl + '/books';
     const params = RestUtil.buildParamsFromPageRequest(filter);
     return this.http.get<Page<Book>>(url, {params});
   }
 
   getBook(bookId: string): Observable<Book> {
-    const url = this.baseUrl + '/getBook';
-    const params = new HttpParams().set('bookId', bookId);
+    const url = this.baseUrl + '/book';
+    const params = new HttpParams().set('id', bookId);
     return this.http.get<Book>(url, {params});
   }
 
   saveBook(book: Book): Observable<void> {
-    const url = this.baseUrl + '/saveBook';
+    const url = this.baseUrl + '/book';
     return this.http.post<void>(url, book);
   }
 
+  updateBookStatus(bookId: string, newStatus: string): Observable<void> {
+    const url = this.baseUrl + '/book';
+    const params = new HttpParams()
+      .set('id', bookId)
+      .set('status', newStatus);
+    return this.http.patch<void>(url, null, {params});
+  }
+
   deleteBook(bookId: string): Observable<void> {
-    const url = this.baseUrl + '/deleteBook';
-    const params = new HttpParams().set('bookId', bookId);
+    const url = this.baseUrl + '/book';
+    const params = new HttpParams().set('id', bookId);
     return this.http.delete<void>(url, {params});
   }
 

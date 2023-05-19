@@ -3,7 +3,7 @@ import { PageRequest } from '../models/page';
 
 export class RestUtil {
   public static buildParamsFromPageRequest(filter: Partial<PageRequest>): HttpParams {
-    const {pageIndex, pageSize, sort, direction} = filter;
+    const {pageIndex, pageSize, sort, direction, searchTerm} = filter;
     // using let and reassigning params, because httpParams is immutable, so .set() returns new object.
     let params = new HttpParams();
     if (pageIndex != null) {
@@ -14,6 +14,9 @@ export class RestUtil {
     }
     if (sort != null) {
       params = params.set('sort', sort + ',' + direction ?? '');
+    }
+    if (searchTerm != null) {
+      params = params.set('search', searchTerm);
     }
     return params;
   }

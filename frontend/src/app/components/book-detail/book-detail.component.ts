@@ -26,7 +26,11 @@ export class BookDetailComponent implements OnInit {
   }
 
   removeBook(bookId: string): void {
-    this.bookService.deleteBook(bookId);
+    this.bookService.deleteBook(bookId).subscribe();
+  }
+
+  updateBookStatus(book: Book): void {
+    this.bookService.updateBookStatus(book.id, "BORROWED").subscribe();
   }
 
 }

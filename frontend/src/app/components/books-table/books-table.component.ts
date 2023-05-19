@@ -20,7 +20,8 @@ export class BooksTableComponent implements OnInit {
     pageIndex: 0,
     pageSize: 20,
     sort: '',
-    direction: ''
+    direction: '',
+    searchTerm: ''
   }
 
   allBooks$!: Observable<Page<Book>>;
