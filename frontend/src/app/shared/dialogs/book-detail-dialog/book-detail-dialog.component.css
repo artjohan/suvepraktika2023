@@ -1,0 +1,6 @@
+.actionDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+}

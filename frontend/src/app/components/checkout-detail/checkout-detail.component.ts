@@ -28,6 +28,7 @@ export class CheckoutDetailComponent implements OnInit {
       .pipe(switchMap(id => this.checkoutService.getCheckout(id)))
   }
 
+  // function for returning book, also updates returnedDate to the current day and makes the book available for borrowing again
   returnBook(checkout: Checkout): void {
     const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')!;
     this.checkoutService.updateReturnedDate(checkout.id, formattedDate).subscribe();

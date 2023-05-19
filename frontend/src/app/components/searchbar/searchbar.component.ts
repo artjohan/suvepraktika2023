@@ -13,6 +13,7 @@ export class SearchbarComponent{
 
   constructor(private booksTableComponent: BooksTableComponent) { }
 
+  // adds the searchValue to the request params, then calls updateTable() to get filtered results
   search(): void {
     this.booksTableComponent.pageInfo.searchTerm = this.searchValue;
     this.booksTableComponent.updateTable();

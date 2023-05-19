@@ -5,6 +5,8 @@ import { Book } from '../../models/book';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { BookDetailDialogComponent } from '../../shared/dialogs/book-detail-dialog/book-detail-dialog.component'
 
 @Component({
   selector: 'app-book-detail',
@@ -17,6 +19,7 @@ export class BookDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private bookService: BookService,
     private datePipe: DatePipe,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -25,16 +28,21 @@ export class BookDetailComponent implements OnInit {
       .pipe(switchMap(id => this.bookService.getBook(id)))
   }
 
+  // deletes book from database
   removeBook(bookId: string): void {
     this.bookService.deleteBook(bookId).subscribe();
   }
 
-  updateBookStatus(book: Book): void {
-    const currentDate = new Date();
-    currentDate.setMonth(currentDate.getMonth() + 3);
-    const formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd')!;
+  // opens a dialog box asking for additional checkout information
+  openCheckoutDialog(book: Book): void {
+    const dialogRef = this.dialog.open(BookDetailDialogComponent, {
+          width: '400px',
+          data: book,
+        });
 
-    this.bookService.updateBookStatus(book.id, "BORROWED", formattedDate).subscribe();
-  }
+        dialogRef.afterClosed().subscribe(result => {
+          // Handle dialog close event if needed
+        });
+      }
 
 }
