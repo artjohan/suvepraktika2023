@@ -21,7 +21,8 @@ export class BooksTableComponent implements OnInit {
     pageSize: 20,
     sort: '',
     direction: '',
-    searchTerm: ''
+    searchTerm: '',
+    status: ''
   }
 
   books$!: Observable<Page<Book>>;
@@ -61,7 +62,12 @@ export class BooksTableComponent implements OnInit {
   }
 
   searchBooks(searchValue: string): void {
-      this.pageInfo.searchTerm = searchValue;
-      this.updateTable();
-    }
+    this.pageInfo.searchTerm = searchValue;
+    this.updateTable();
+  }
+
+  filterBooksByStatus(status: string): void {
+    this.pageInfo.status = status;
+    this.updateTable();
+  }
 }

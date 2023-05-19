@@ -1,0 +1,12 @@
+.form-fields-container {
+  display: flex;
+  align-items: center;
+}
+
+.form-field-wrapper {
+  margin-right: 10px;
+}
+
+.form-field-wrapper:last-child {
+  margin-right: 0;
+}

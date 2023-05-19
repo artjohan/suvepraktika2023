@@ -20,8 +20,8 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    public Page<BookDTO> getBooks(Pageable pageable, String searchTerm) {
-        return searchTerm == null ? getAllBooks(pageable) : getBooksBySearchTerm(pageable, searchTerm);
+    public Page<BookDTO> getBooks(Pageable pageable, String searchTerm, BookStatus status) {
+        return status == null ? getBooksBySearchTerm(pageable, searchTerm) : getBooksByStatusAndSearchTerm(pageable, searchTerm, status);
     }
 
     public BookDTO getBook(UUID bookId) {
@@ -64,6 +64,11 @@ public class BookService {
     private Page<BookDTO> getBooksBySearchTerm(Pageable pageable, String searchTerm) {
         ModelMapper modelMapper = ModelMapperFactory.getMapper();
         return bookRepository.findByTitleContainingIgnoreCase(searchTerm, pageable).map(book -> modelMapper.map(book, BookDTO.class));
+    }
+
+    private Page<BookDTO> getBooksByStatusAndSearchTerm(Pageable pageable, String searchTerm, BookStatus status) {
+        ModelMapper modelMapper = ModelMapperFactory.getMapper();
+        return bookRepository.findByStatusAndTitleContainingIgnoreCase(status, searchTerm, pageable).map(book -> modelMapper.map(book, BookDTO.class));
     }
 
     private Page<BookDTO> getAllBooks(Pageable pageable) {

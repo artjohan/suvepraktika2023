@@ -6,6 +6,7 @@
     <mat-card-content>Due: {{checkout.dueDate}}</mat-card-content>
     <mat-card-content *ngIf="checkout.returnedDate">Returned: {{checkout.returnedDate}}</mat-card-content>
     <mat-card-actions>
+      <button (click)="removeCheckout(checkout)" mat-button>REMOVE</button>
       <button *ngIf="!checkout.returnedDate" (click)="returnBook(checkout)" mat-button>RETURN</button>
     </mat-card-actions>
   </mat-card>

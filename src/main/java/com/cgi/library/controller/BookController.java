@@ -19,8 +19,11 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping(value = "books")
-    public ResponseEntity<Page<BookDTO>> getBooks(Pageable pageable, @RequestParam(required = false) String search) {
-        Page<BookDTO> books = bookService.getBooks(pageable, search);
+    public ResponseEntity<Page<BookDTO>> getBooks(Pageable pageable,
+                                                  @RequestParam(required = false) String search,
+                                                  @RequestParam(required = false) BookStatus status)
+    {
+        Page<BookDTO> books = bookService.getBooks(pageable, search, status);
         return ResponseEntity.ok(books);
     }
 
@@ -32,7 +35,8 @@ public class BookController {
     @PatchMapping(value = "book")
     public ResponseEntity<String> updateBookStatus(@RequestParam(value = "id") UUID bookId,
                                                    @RequestParam(value = "status") BookStatus newStatus,
-                                                   @RequestParam(required = false) String date) {
+                                                   @RequestParam(required = false) String date)
+    {
         bookService.updateStatus(bookId, newStatus, date);
         return ResponseEntity.ok("");
     }

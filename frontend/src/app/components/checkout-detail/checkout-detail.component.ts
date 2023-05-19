@@ -25,7 +25,11 @@ export class CheckoutDetailComponent implements OnInit {
   ngOnInit(): void {
     this.checkout$ = this.route.params
       .pipe(map(params => params['id']))
-      .pipe(switchMap(id => this.checkoutService.getCheckout(id)))
+      .pipe(switchMap(id => this.checkoutService.getCheckout(id)));
+  }
+
+  removeCheckout(checkout: Checkout): void {
+    this.checkoutService.deleteCheckout(checkout.id).subscribe();
   }
 
   // function for returning book, also updates returnedDate to the current day and makes the book available for borrowing again

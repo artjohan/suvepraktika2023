@@ -1,4 +1,22 @@
-<mat-form-field>
-  <input type="text" matInput placeholder="Search" [(ngModel)]="searchValue" (input)="search()">
-  <mat-icon matSuffix>search</mat-icon>
-</mat-form-field>
+<div class="form-fields-container">
+  <div class="form-field-wrapper">
+    <mat-form-field class="search-field">
+      <input type="text" matInput placeholder="Search" [(ngModel)]="searchValue" (input)="search()">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="form-field-wrapper">
+    <mat-form-field class="select-field">
+      <mat-label>Filter by status</mat-label>
+      <mat-select (selectionChange)="optionSelectChange($event)">
+        <mat-option>ALL</mat-option>
+        <mat-option value="AVAILABLE">AVAILABLE</mat-option>
+        <mat-option value="BORROWED">BORROWED</mat-option>
+        <mat-option value="RETURNED">RETURNED</mat-option>
+        <mat-option value="DAMAGED">DAMAGED</mat-option>
+        <mat-option value="PROCESSING">PROCESSING</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
