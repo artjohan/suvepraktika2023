@@ -20,6 +20,24 @@ mat-card-title:hover {
   color: grey;
 }
 
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button {
+  border-radius: 10px;
+  border: solid 3px black;
+  transition: transform .2s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+
 div{
   display: flex;
   justify-content: center;

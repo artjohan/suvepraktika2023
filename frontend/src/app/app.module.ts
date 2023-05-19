@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +13,7 @@ import { BooksTableComponent } from './components/books-table/books-table.compon
 import { CheckoutsTableComponent } from './components/checkouts-table/checkouts-table.component';
 import { CheckoutDetailComponent } from './components/checkout-detail/checkout-detail.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
+import { BookDetailDialogComponent } from './shared/dialogs/book-detail-dialog/book-detail-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     CheckoutsTableComponent,
     CheckoutDetailComponent,
     SearchbarComponent,
+    BookDetailDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,9 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     MaterialModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

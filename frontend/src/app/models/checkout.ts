@@ -7,4 +7,5 @@ export interface Checkout {
   borrowedBook: Book;
   checkedOutDate: string;
   dueDate: string;
+  returnedDate: string;
 }

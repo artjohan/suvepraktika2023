@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book';
 import { Observable } from 'rxjs';
@@ -11,12 +12,11 @@ import { map, switchMap } from 'rxjs/operators';
   styleUrls: ['./book-detail.component.scss']
 })
 export class BookDetailComponent implements OnInit {
-  book$!: Observable<Book>;
-
-
+  book$!: Observable<Book>
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
+    private datePipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +30,11 @@ export class BookDetailComponent implements OnInit {
   }
 
   updateBookStatus(book: Book): void {
-    this.bookService.updateBookStatus(book.id, "BORROWED").subscribe();
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() + 3);
+    const formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd')!;
+
+    this.bookService.updateBookStatus(book.id, "BORROWED", formattedDate).subscribe();
   }
 
 }

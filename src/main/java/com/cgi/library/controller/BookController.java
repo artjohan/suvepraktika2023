@@ -30,8 +30,10 @@ public class BookController {
     }
 
     @PatchMapping(value = "book")
-    public ResponseEntity<String> updateBookStatus(@RequestParam(value = "id") UUID bookId, @RequestParam(value = "status") BookStatus newStatus) {
-        bookService.updateStatus(bookId, newStatus);
+    public ResponseEntity<String> updateBookStatus(@RequestParam(value = "id") UUID bookId,
+                                                   @RequestParam(value = "status") BookStatus newStatus,
+                                                   @RequestParam(required = false) String date) {
+        bookService.updateStatus(bookId, newStatus, date);
         return ResponseEntity.ok("");
     }
 

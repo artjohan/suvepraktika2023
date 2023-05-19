@@ -19,24 +19,32 @@ export class CheckoutService {
   }
 
   getCheckouts(filter: Partial<PageRequest>): Observable<Page<Checkout>> {
-    const url = this.baseUrl + '/getCheckouts';
+    const url = this.baseUrl + '/checkouts';
     const params = RestUtil.buildParamsFromPageRequest(filter);
     return this.http.get<Page<Checkout>>(url, {params});
   }
 
   getCheckout(checkoutId: string): Observable<Checkout> {
-    const url = this.baseUrl + '/getCheckout';
-    const params = new HttpParams().set('checkOutId', checkoutId);
+    const url = this.baseUrl + '/checkout';
+    const params = new HttpParams().set('id', checkoutId);
     return this.http.get<Checkout>(url, {params});
   }
 
   saveCheckout(checkout: Checkout): Observable<void> {
-    const url = this.baseUrl + '/saveCheckout';
+    const url = this.baseUrl + '/checkout';
     return this.http.post<void>(url, checkout);
   }
 
+  updateReturnedDate(checkoutId: string, returnedDate: string): Observable<void> {
+    const url = this.baseUrl + '/checkout';
+    const params = new HttpParams()
+      .set('id', checkoutId)
+      .set('date', returnedDate);
+    return this.http.patch<void>(url, null, {params});
+  }
+
   deleteCheckout(checkoutId: string): Observable<void> {
-    const url = this.baseUrl + '/deleteCheckout';
+    const url = this.baseUrl + '/checkout';
     const params = new HttpParams().set('checkOutId', checkoutId);
     return this.http.delete<void>(url, {params});
   }

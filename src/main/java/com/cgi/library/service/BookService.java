@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -33,14 +34,31 @@ public class BookService {
         return bookRepository.save(modelMapper.map(bookDTO, Book.class)).getId();
     }
 
-    public void updateStatus(UUID bookId, BookStatus newStatus)  {
-        Book book = bookRepository.getOne(bookId);
-        book.setStatus(newStatus);
-        bookRepository.save(book);
+    public void updateStatus(UUID bookId, BookStatus newStatus, String date)  {
+        if(date == null) {
+            updateToAvailable(bookId, newStatus);
+        } else {
+            updateToBorrowed(bookId, newStatus, date);
+        }
     }
 
     public void deleteBook(UUID bookId) {
         bookRepository.deleteById(bookId);
+    }
+
+    private void updateToBorrowed(UUID bookId, BookStatus newStatus, String date) {
+        Book book = bookRepository.getOne(bookId);
+        book.setStatus(newStatus);
+        book.setCheckOutCount(book.getCheckOutCount()+1);
+        book.setDueDate(LocalDate.parse(date));
+        bookRepository.save(book);
+    }
+
+    private void updateToAvailable(UUID bookId, BookStatus newStatus) {
+        Book book = bookRepository.getOne(bookId);
+        book.setStatus(newStatus);
+        book.setDueDate(null);
+        bookRepository.save(book);
     }
 
     private Page<BookDTO> getBooksBySearchTerm(Pageable pageable, String searchTerm) {
