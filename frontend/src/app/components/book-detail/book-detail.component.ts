@@ -4,10 +4,11 @@ import { BookService } from '../../services/book.service';
 import { CheckoutService } from '../../services/checkout.service';
 import { Book } from '../../models/book';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { BookDetailDialogComponent } from '../../shared/dialogs/book-detail-dialog/book-detail-dialog.component'
+import { ConfirmationDialogComponent } from '../../shared/dialogs/confirmation-dialog/confirmation-dialog.component'
 
 @Component({
   selector: 'app-book-detail',
@@ -22,6 +23,7 @@ export class BookDetailComponent implements OnInit {
     private checkoutService: CheckoutService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
+    private router: Router
   ) { }
 
   book$!: Observable<Book>
@@ -44,11 +46,20 @@ export class BookDetailComponent implements OnInit {
     const dialogRef = this.dialog.open(BookDetailDialogComponent, {
           width: '400px',
           data: book,
-        });
+    });
+  }
 
-        dialogRef.afterClosed().subscribe(result => {
-          // Handle dialog close event if needed
-        });
+  // opens a dialog asking for confirmation on removing book
+  openRemoveDialog(book: Book): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+          width: '400px',
+          data: "Are you sure you want to remove this book from the library?",
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.removeBook(book)
+        this.router.navigateByUrl('/books')
       }
-
+    });
+  }
 }

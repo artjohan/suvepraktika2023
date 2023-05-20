@@ -5,11 +5,12 @@
     <mat-card-content>Genre: {{book.genre}}</mat-card-content>
     <mat-card-content>Year: {{book.year}}</mat-card-content>
     <mat-card-content>Added to library: {{book.added}}</mat-card-content>
+    <mat-card-content *ngIf="book.comment">Comment {{book.comment}}</mat-card-content>
     <mat-card-content>Times checked out: {{book.checkOutCount}}</mat-card-content>
     <mat-card-content>Status: {{book.status}}</mat-card-content>
     <mat-card-content *ngIf="book.dueDate">Due: {{book.dueDate}}</mat-card-content>
     <mat-card-actions>
-      <button (click)="removeBook(book)" mat-button>REMOVE</button>
+      <button (click)="openRemoveDialog(book)" mat-button>REMOVE</button>
       <button *ngIf="book.status==='AVAILABLE'" (click)="openCheckoutDialog(book)" mat-button>BORROW</button>
     </mat-card-actions>
   </mat-card>

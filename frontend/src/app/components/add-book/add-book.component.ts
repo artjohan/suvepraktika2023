@@ -33,7 +33,8 @@ export class AddBookComponent {
         year: this.input.year!,
         added: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
         checkOutCount: 0,
-        status: "AVAILABLE"
+        status: "AVAILABLE",
+        comment: this.input.comment!
       }
       this.bookService.saveBook(newBook).subscribe(resp => {
         this.resetForm();

@@ -4,8 +4,10 @@ import { CheckoutService } from '../../services/checkout.service';
 import { BookService } from '../../services/book.service';
 import { Checkout } from '../../models/checkout';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { ConfirmationDialogComponent } from '../../shared/dialogs/confirmation-dialog/confirmation-dialog.component'
 
 @Component({
   selector: 'app-checkout-detail',
@@ -19,6 +21,8 @@ export class CheckoutDetailComponent implements OnInit {
     private checkoutService: CheckoutService,
     private bookService: BookService,
     private datePipe: DatePipe,
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   checkout$!: Observable<Checkout>;
@@ -68,5 +72,34 @@ export class CheckoutDetailComponent implements OnInit {
     const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')!;
     this.checkoutService.updateReturnedDate(checkout.id, formattedDate).subscribe();
     this.bookService.updateBookStatus(checkout.borrowedBook.id, "AVAILABLE", "").subscribe();
+  }
+
+  // opens a dialog asking for confirmation for removing checkout
+  openRemoveDialog(checkout: Checkout): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+          width: '400px',
+          data: "Are you sure you want to remove this checkout from the checkouts history?",
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.removeCheckout(checkout)
+        this.router.navigateByUrl('/checkouts')
+      }
+    });
+  }
+
+  // opens a dialog asking for confirmation on returning book
+  openReturnDialog(checkout: Checkout): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+          width: '400px',
+          data: "Are you sure you want to return this book?",
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.returnBook(checkout)
+        this.status = `RETURNED ON ${this.datePipe.transform(new Date(), 'yyyy-MM-dd')!}`
+        this.statusColor = "green"
+      }
+    });
   }
 }

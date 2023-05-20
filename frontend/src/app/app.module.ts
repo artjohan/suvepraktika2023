@@ -18,6 +18,7 @@ import { CheckoutDetailComponent } from './components/checkout-detail/checkout-d
 import { SearchAndFilterComponent } from './components/search-and-filter/search-and-filter.component';
 import { BookDetailDialogComponent } from './shared/dialogs/book-detail-dialog/book-detail-dialog.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
+import { ConfirmationDialogComponent } from './shared/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AddBookComponent } from './components/add-book/add-book.component';
     SearchAndFilterComponent,
     BookDetailDialogComponent,
     AddBookComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
