@@ -17,6 +17,7 @@ import { CheckoutsTableComponent } from './components/checkouts-table/checkouts-
 import { CheckoutDetailComponent } from './components/checkout-detail/checkout-detail.component';
 import { SearchAndFilterComponent } from './components/search-and-filter/search-and-filter.component';
 import { BookDetailDialogComponent } from './shared/dialogs/book-detail-dialog/book-detail-dialog.component';
+import { AddBookComponent } from './components/add-book/add-book.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { BookDetailDialogComponent } from './shared/dialogs/book-detail-dialog/b
     CheckoutDetailComponent,
     SearchAndFilterComponent,
     BookDetailDialogComponent,
+    AddBookComponent,
   ],
   imports: [
     BrowserModule,

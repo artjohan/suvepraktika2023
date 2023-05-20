@@ -9,3 +9,19 @@
 th.mat-sort-header-sorted {
   color: black;
 }
+
+.search-and-paginator {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.app-search-and-filter {
+  flex-basis: 60%;
+}
+
+.mat-paginator {
+  flex-basis: 35%;
+}
+

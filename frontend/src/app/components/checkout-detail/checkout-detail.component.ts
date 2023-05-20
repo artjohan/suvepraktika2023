@@ -23,6 +23,7 @@ export class CheckoutDetailComponent implements OnInit {
 
   checkout$!: Observable<Checkout>;
   status: string = "";
+  statusColor: string = "green";
 
   ngOnInit(): void {
     this.checkout$ = this.route.params.pipe(
@@ -41,15 +42,25 @@ export class CheckoutDetailComponent implements OnInit {
   // sets the status of the checkout by comparing dates
   setStatus(checkout: Checkout): void {
     if(checkout.returnedDate) {
-      this.status = "RETURNED";
+      this.status = `RETURNED ON ${checkout.returnedDate}`;
     } else {
       const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')!;
       if(formattedDate > checkout.dueDate) {
-        this.status = "OVERDUE";
+        this.status = `${this.calculateDayDifference(formattedDate, checkout.dueDate)} DAYS OVERDUE`;
+        this.statusColor = "red";
       } else {
-        this.status = "BORROWED";
+        this.status = `BORROWED WITH ${this.calculateDayDifference(checkout.dueDate, formattedDate)} DAYS LEFT`;
+        this.statusColor = "orange";
       }
     }
+  }
+
+  // calculates how many days are between 2 dates
+  calculateDayDifference(startDateStr: string, endDateStr: string): number {
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+    const difference = Math.abs(endDate.getTime() - startDate.getTime());
+    return Math.ceil(difference / (1000 * 3600 * 24));
   }
 
   // function for returning book, also updates returnedDate to the current day and makes the book available for borrowing again

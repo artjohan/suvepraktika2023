@@ -16,6 +16,11 @@ export class SearchAndFilterComponent{
 
   @Input() searchType: string = "";
   searchValue: string = "";
+  selectedStatus?: string;
+  hint?: string;
+
+  bookStatuses: string[] = ["AVAILABLE", "BORROWED", "RETURNED", "DAMAGED", "PROCESSING"];
+  checkoutStatuses: string[] = ["RETURNED", "BORROWED", "OVERDUE"];
 
   // calls the methods of each respective class with the searchValue
   search(): void {

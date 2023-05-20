@@ -4,6 +4,7 @@ import { BookDetailComponent } from './components/book-detail/book-detail.compon
 import { BooksTableComponent } from './components/books-table/books-table.component';
 import { CheckoutsTableComponent } from './components/checkouts-table/checkouts-table.component';
 import { CheckoutDetailComponent } from './components/checkout-detail/checkout-detail.component';
+import { AddBookComponent } from './components/add-book/add-book.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'books', pathMatch: 'full'},
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path: 'books/:id', component: BookDetailComponent},
   {path: 'checkouts', component: CheckoutsTableComponent},
   {path: 'checkouts/:id', component: CheckoutDetailComponent},
+  {path: 'add-book', component: AddBookComponent},
 ];
 
 @NgModule({

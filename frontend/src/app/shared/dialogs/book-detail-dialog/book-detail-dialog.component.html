@@ -1,29 +1,33 @@
 <!-- book-detail-dialog.component.html -->
-<h2 mat-dialog-title>Checking out "{{data.title}}" by {{data.author}}</h2>
+<h2 mat-dialog-title>Please fill this form to check out "{{data.title}}" by {{data.author}}</h2>
 <div mat-dialog-content>
-  <form>
+  <form #checkoutForm="ngForm">
     <mat-form-field>
-      <input matInput name="firstName" placeholder="First Name" [(ngModel)]="firstName">
+      <input matInput name="firstName" placeholder="First Name" required [(ngModel)]="firstName">
+      <mat-error *ngIf="firstName==''">First name is required</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput name="lastName" placeholder="Last Name" [(ngModel)]="lastName">
+      <input matInput name="lastName" placeholder="Last Name" required [(ngModel)]="lastName">
+      <mat-error *ngIf="lastName==''">Last name is required</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Select due date</mat-label>
-      <input matInput name="dueDate"
+      <mat-label style="color:black;">Select due date</mat-label>
+      <input matInput disabled
+             style="color: black;"
+             name="dueDate"
              [min]="minDate"
              [max]="maxDate"
              [matDatepicker]="picker"
-             placeholder="Choose a date"
+             placeholder="Choose a due date"
              [(ngModel)]="dueDate">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <mat-datepicker #picker disabled="false"></mat-datepicker>
     </mat-form-field>
   </form>
 </div>
 <div class="actionDiv" mat-dialog-actions>
   <button mat-button (click)="closeDialog()">Cancel</button>
-  <button mat-button color="primary" (click)="submitForm()">Submit</button>
+  <button mat-button color="primary" (click)="submitForm()">Confirm</button>
 </div>

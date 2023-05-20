@@ -9,6 +9,6 @@ export interface Book {
   added: string;
   checkOutCount: number;
   status: BookStatus;
-  dueDate: string;
-  comment: string;
+  dueDate?: string;
+  comment?: string;
 }

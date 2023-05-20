@@ -11,12 +11,16 @@
       <mat-label>Filter by status</mat-label>
       <mat-select (selectionChange)="optionSelectChange($event)">
         <mat-option>ALL</mat-option>
-        <mat-option *ngIf="searchType=='books'" value="AVAILABLE">AVAILABLE</mat-option>
-        <mat-option value="BORROWED">BORROWED</mat-option>
-        <mat-option value="RETURNED">RETURNED</mat-option>
-        <mat-option *ngIf="searchType=='checkouts'" value="OVERDUE">OVERDUE</mat-option>
-        <mat-option *ngIf="searchType=='books'" value="DAMAGED">DAMAGED</mat-option>
-        <mat-option *ngIf="searchType=='books'" value="PROCESSING">PROCESSING</mat-option>
+        <ng-container *ngIf="searchType==='books'" >
+          <mat-option *ngFor="let status of bookStatuses" [value]="status">
+            {{status}}
+          </mat-option>
+        </ng-container>
+        <ng-container *ngIf="searchType==='checkouts'" >
+          <mat-option *ngFor="let status of checkoutStatuses" [value]="status">
+            {{status}}
+          </mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
   </div>

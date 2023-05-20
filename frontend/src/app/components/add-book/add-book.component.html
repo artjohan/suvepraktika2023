@@ -1,0 +1,35 @@
+<div style="text-align: center">
+  <h1 class="title">Add a new book to the library</h1>
+</div>
+
+<div class="container">
+  <form (ngSubmit)="submitForm()" #bookForm="ngForm" class="form">
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Title" name="title" required [(ngModel)]="input.title">
+      <mat-error *ngIf="input.title==''">Title is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Author" name="author" required [(ngModel)]="input.author">
+      <mat-error *ngIf="input.author==''">Author is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Genre" name="genre" required [(ngModel)]="input.genre">
+      <mat-error *ngIf="input.genre==''">Genre is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Year" name="year" type="number" max="2023" min="1000" required [(ngModel)]="input.year">
+      <mat-error *ngIf="input.year == null">Year is required</mat-error>
+      <mat-error *ngIf="input.year != null && (input.year > 2023 || input.year < 1000)">Invalid year</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Comment</mat-label>
+      <textarea style="height: 100px;" matInput placeholder="Leave a comment if there is anything to mention" name="comment" [(ngModel)]="input.comment"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Add Book</button>
+  </form>
+</div>

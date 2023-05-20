@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
+import { NgForm } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Book } from '../../../models/book';
@@ -14,12 +15,14 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./book-detail-dialog.component.css']
 })
 export class BookDetailDialogComponent implements OnInit{
+  @ViewChild('checkoutForm', { static: false }) checkoutForm?: NgForm;
+
   minDate: Date = new Date();
   maxDate: Date = new Date();
 
   firstName: string = "";
   lastName: string = "";
-  dueDate: string = "";
+  dueDate: Date = new Date();
 
   constructor(public dialogRef: MatDialogRef<BookDetailDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: Book,
@@ -30,21 +33,24 @@ export class BookDetailDialogComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.setMaxDate(); // setting minimum and maximum dates for the date picker
-    this.setMinDate();
+    this.setBoundaryDates(); // setting minimum and maximum dates for the date picker
+    this.dueDate = this.dateAdapter.addCalendarDays(this.dueDate, 1); // setting the dueDate default value to the minimum date
   }
 
   submitForm(): void {
-    this.addCheckout();
-    this.updateBookStatus();
-    this.closeDialog();
+    if(this.checkoutForm!.valid) {
+      this.addCheckout();
+      this.updateBookStatus();
+      this.closeDialog();
+    }
   }
 
-  // adds all the information to a new Checkout interface, then sends it as the body for a POST request
+  // adds all the information to a new Checkout object, then sends it as the body for a POST request, also updates the book's data
   addCheckout(): void {
     this.data.status = "BORROWED";
     this.data.dueDate = this.datePipe.transform(this.dueDate, 'yyyy-MM-dd')!;
-    this.data.checkOutCount += 1
+    this.data.checkOutCount += 1;
+
     const resultCheckout: Checkout = {
       id: uuidv4(),
       borrowerFirstName: this.firstName,
@@ -52,7 +58,6 @@ export class BookDetailDialogComponent implements OnInit{
       borrowedBook: this.data,
       checkedOutDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
       dueDate: this.datePipe.transform(this.dueDate, 'yyyy-MM-dd')!,
-      returnedDate: null
     }
     this.checkoutService.saveCheckout(resultCheckout).subscribe();
   }
@@ -67,13 +72,9 @@ export class BookDetailDialogComponent implements OnInit{
     this.dialogRef.close();
   }
 
-  setMaxDate() {
+  setBoundaryDates() {
     const currentDate = new Date();
     this.maxDate = this.dateAdapter.addCalendarYears(currentDate, 1);
-  }
-
-  setMinDate() {
-    const currentDate = new Date();
     this.minDate = this.dateAdapter.addCalendarDays(currentDate, 1);
   }
 }
