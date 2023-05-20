@@ -43,6 +43,8 @@ export class BookDetailDialogComponent implements OnInit{
   // adds all the information to a new Checkout interface, then sends it as the body for a POST request
   addCheckout(): void {
     this.data.status = "BORROWED";
+    this.data.dueDate = this.datePipe.transform(this.dueDate, 'yyyy-MM-dd')!;
+    this.data.checkOutCount += 1
     const resultCheckout: Checkout = {
       id: uuidv4(),
       borrowerFirstName: this.firstName,
@@ -57,8 +59,8 @@ export class BookDetailDialogComponent implements OnInit{
 
   // updates the status of the book from "AVAILABLE" to "BORROWED", also adds the due date to the table
   updateBookStatus(): void {
-      const formattedDate = this.datePipe.transform(this.dueDate, 'yyyy-MM-dd')!;
-      this.bookService.updateBookStatus(this.data.id, "BORROWED", formattedDate).subscribe();
+    const formattedDate = this.datePipe.transform(this.dueDate, 'yyyy-MM-dd')!;
+    this.bookService.updateBookStatus(this.data.id, "BORROWED", formattedDate).subscribe();
   }
 
   closeDialog(): void {

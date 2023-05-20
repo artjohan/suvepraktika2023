@@ -1,4 +1,4 @@
-<div *ngIf="(allCheckouts$ | async) as checkouts">
+<div *ngIf="(checkouts$ | async) as checkouts">
   <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]"
                  [pageSize]="pageInfo.pageSize"
                  [pageIndex]="pageInfo.pageIndex"
@@ -7,7 +7,7 @@
                  showFirstLastButtons
                  aria-label="Select page of checkouts table">
   </mat-paginator>
-  <app-searchbar [searchType]="'checkouts'"></app-searchbar>
+  <app-search-and-filter [searchType]="'checkouts'"></app-search-and-filter>
   <table mat-table [dataSource]="dataSource"
          matSort
          (matSortChange)="sortTable($event)"

@@ -5,7 +5,7 @@ import { BookService } from '../../services/book.service';
 import { Checkout } from '../../models/checkout';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-checkout-detail',
@@ -13,7 +13,6 @@ import { map, switchMap } from 'rxjs/operators';
   styleUrls: ['./checkout-detail.component.css']
 })
 export class CheckoutDetailComponent implements OnInit {
-  checkout$!: Observable<Checkout>;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,14 +21,35 @@ export class CheckoutDetailComponent implements OnInit {
     private datePipe: DatePipe,
   ) {}
 
+  checkout$!: Observable<Checkout>;
+  status: string = "";
+
   ngOnInit(): void {
-    this.checkout$ = this.route.params
-      .pipe(map(params => params['id']))
-      .pipe(switchMap(id => this.checkoutService.getCheckout(id)));
+    this.checkout$ = this.route.params.pipe(
+      map(params => params['id']),
+      switchMap(id => this.checkoutService.getCheckout(id)),
+      tap(checkout => {
+        this.setStatus(checkout);
+      })
+    );
   }
 
   removeCheckout(checkout: Checkout): void {
     this.checkoutService.deleteCheckout(checkout.id).subscribe();
+  }
+
+  // sets the status of the checkout by comparing dates
+  setStatus(checkout: Checkout): void {
+    if(checkout.returnedDate) {
+      this.status = "RETURNED";
+    } else {
+      const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')!;
+      if(formattedDate > checkout.dueDate) {
+        this.status = "OVERDUE";
+      } else {
+        this.status = "BORROWED";
+      }
+    }
   }
 
   // function for returning book, also updates returnedDate to the current day and makes the book available for borrowing again

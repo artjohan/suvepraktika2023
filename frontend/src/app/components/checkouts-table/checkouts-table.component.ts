@@ -21,10 +21,10 @@ export class CheckoutsTableComponent implements OnInit {
       pageSize: 20,
       sort: '',
       direction: '',
-      searchTerm: ''
+      searchTerm: '',
   }
 
-  allCheckouts$!: Observable<Page<Checkout>>;
+  checkouts$!: Observable<Page<Checkout>>;
   checkoutsLength?: number;
   dataSource = new MatTableDataSource<Checkout>();
   columnHeaders: string[] = ['borrowedBookTitle', 'borrowerFirstName', 'borrowerLastName', 'checkedOutDate', 'dueDate'];
@@ -34,7 +34,7 @@ export class CheckoutsTableComponent implements OnInit {
     this.checkoutService.getCheckouts(this.pageInfo).subscribe(checkouts => {
         this.dataSource.data = checkouts.content;
         this.checkoutsLength = checkouts.totalElements;
-        this.allCheckouts$ = this.checkoutService.getCheckouts({pageIndex: 0, pageSize: this.checkoutsLength});
+        this.checkouts$ = this.checkoutService.getCheckouts(this.pageInfo);
     })
   }
 
@@ -62,6 +62,11 @@ export class CheckoutsTableComponent implements OnInit {
 
   searchCheckouts(searchValue: string): void {
     this.pageInfo.searchTerm = searchValue;
+    this.updateTable();
+  }
+
+  filterCheckoutsByStatus(status: string): void {
+    this.pageInfo.status = status;
     this.updateTable();
   }
 }

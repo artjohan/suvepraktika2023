@@ -22,7 +22,6 @@ export class BooksTableComponent implements OnInit {
     sort: '',
     direction: '',
     searchTerm: '',
-    status: ''
   }
 
   books$!: Observable<Page<Book>>;

@@ -15,7 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BooksTableComponent } from './components/books-table/books-table.component';
 import { CheckoutsTableComponent } from './components/checkouts-table/checkouts-table.component';
 import { CheckoutDetailComponent } from './components/checkout-detail/checkout-detail.component';
-import { SearchbarComponent } from './components/searchbar/searchbar.component';
+import { SearchAndFilterComponent } from './components/search-and-filter/search-and-filter.component';
 import { BookDetailDialogComponent } from './shared/dialogs/book-detail-dialog/book-detail-dialog.component';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { BookDetailDialogComponent } from './shared/dialogs/book-detail-dialog/b
     BooksTableComponent,
     CheckoutsTableComponent,
     CheckoutDetailComponent,
-    SearchbarComponent,
+    SearchAndFilterComponent,
     BookDetailDialogComponent,
   ],
   imports: [

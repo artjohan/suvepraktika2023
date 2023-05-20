@@ -15,7 +15,7 @@ import { BookDetailDialogComponent } from '../../shared/dialogs/book-detail-dial
   styleUrls: ['./book-detail.component.scss']
 })
 export class BookDetailComponent implements OnInit {
-  book$!: Observable<Book>
+
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
@@ -23,6 +23,8 @@ export class BookDetailComponent implements OnInit {
     private datePipe: DatePipe,
     private dialog: MatDialog,
   ) { }
+
+  book$!: Observable<Book>
 
   ngOnInit(): void {
     this.book$ = this.route.params

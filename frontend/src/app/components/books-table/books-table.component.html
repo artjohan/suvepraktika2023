@@ -7,7 +7,7 @@
                  showFirstLastButtons
                  aria-label="Select page of books table">
   </mat-paginator>
-  <app-searchbar [searchType]="'books'"></app-searchbar>
+  <app-search-and-filter [searchType]="'books'"></app-search-and-filter>
   <table mat-table [dataSource]="dataSource"
          matSort
          (matSortChange)="sortTable($event)"
