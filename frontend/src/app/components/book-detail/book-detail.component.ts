@@ -7,8 +7,9 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { BookDetailDialogComponent } from '../../shared/dialogs/book-detail-dialog/book-detail-dialog.component'
-import { ConfirmationDialogComponent } from '../../shared/dialogs/confirmation-dialog/confirmation-dialog.component'
+import { BookDetailDialogComponent } from '../../shared/dialogs/book-detail-dialog/book-detail-dialog.component';
+import { ConfirmationDialogComponent } from '../../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'app-book-detail',
@@ -23,7 +24,8 @@ export class BookDetailComponent implements OnInit {
     private checkoutService: CheckoutService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private helperService: HelperService
   ) { }
 
   book$!: Observable<Book>
@@ -47,6 +49,11 @@ export class BookDetailComponent implements OnInit {
           width: '400px',
           data: book,
     });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.helperService.openSnackBar("Book successfully checked out!");
+      }
+    });
   }
 
   // opens a dialog asking for confirmation on removing book
@@ -57,8 +64,9 @@ export class BookDetailComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.removeBook(book)
-        this.router.navigateByUrl('/books')
+        this.removeBook(book);
+        this.helperService.openSnackBar("Book successfully removed!");
+        this.router.navigateByUrl('/books');
       }
     });
   }

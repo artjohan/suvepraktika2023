@@ -1,8 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BookService } from '../../../services/book.service';
-import { CheckoutService } from '../../../services/checkout.service';
-import { Checkout } from '../../../models/checkout';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-confirmation-dialog',

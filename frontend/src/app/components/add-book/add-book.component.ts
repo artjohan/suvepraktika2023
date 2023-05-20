@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { Book } from '../../models/book';
 import { BookService } from '../../services/book.service';
 import { v4 as uuidv4 } from 'uuid';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'app-add-book',
@@ -21,7 +22,9 @@ export class AddBookComponent {
       comment: null
   }
 
-  constructor(private bookService: BookService, private datePipe: DatePipe) { }
+  constructor(private bookService: BookService,
+              private datePipe: DatePipe,
+              private helperService: HelperService) { }
 
   submitForm() {
     if(this.bookForm!.valid) {
@@ -38,6 +41,7 @@ export class AddBookComponent {
       }
       this.bookService.saveBook(newBook).subscribe(resp => {
         this.resetForm();
+        this.helperService.openSnackBar("Book successfully added to the library!");
       });
     }
   }

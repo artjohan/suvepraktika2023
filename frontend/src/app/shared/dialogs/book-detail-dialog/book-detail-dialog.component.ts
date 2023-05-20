@@ -41,7 +41,7 @@ export class BookDetailDialogComponent implements OnInit{
     if(this.checkoutForm!.valid) {
       this.addCheckout();
       this.updateBookStatus();
-      this.closeDialog();
+      this.closeDialog(true);
     }
   }
 
@@ -68,8 +68,8 @@ export class BookDetailDialogComponent implements OnInit{
     this.bookService.updateBookStatus(this.data.id, "BORROWED", formattedDate).subscribe();
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
+  closeDialog(confirmed: boolean): void {
+    this.dialogRef.close(confirmed);
   }
 
   setBoundaryDates() {

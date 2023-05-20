@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from '../../shared/dialogs/confirmation-dialog/confirmation-dialog.component'
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'app-checkout-detail',
@@ -22,7 +23,8 @@ export class CheckoutDetailComponent implements OnInit {
     private bookService: BookService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private helperService: HelperService
   ) {}
 
   checkout$!: Observable<Checkout>;
@@ -82,8 +84,9 @@ export class CheckoutDetailComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.removeCheckout(checkout)
-        this.router.navigateByUrl('/checkouts')
+        this.removeCheckout(checkout);
+        this.helperService.openSnackBar("Checkout successfully removed!");
+        this.router.navigateByUrl('/checkouts');
       }
     });
   }
@@ -96,9 +99,10 @@ export class CheckoutDetailComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.returnBook(checkout)
-        this.status = `RETURNED ON ${this.datePipe.transform(new Date(), 'yyyy-MM-dd')!}`
-        this.statusColor = "green"
+        this.returnBook(checkout);
+        this.status = `RETURNED ON ${this.datePipe.transform(new Date(), 'yyyy-MM-dd')!}`;
+        this.statusColor = "green";
+        this.helperService.openSnackBar("Book successfully returned!");
       }
     });
   }
