@@ -25,9 +25,4 @@ export class AccountViewComponent implements OnInit{
       this.router.navigateByUrl('/login');
     }
   }
-
-  logout(): void {
-    this.userService.removeCurrentUser();
-    window.location.href = '/'
-  }
 }

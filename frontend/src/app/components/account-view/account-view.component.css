@@ -1,0 +1,22 @@
+mat-card {
+  padding: 30px;
+}
+
+mat-card-content {
+  margin: 20px;
+  font-size:20px;
+}
+
+mat-card-title {
+  font-size:50px;
+  margin-bottom: 30px;
+  line-height: 1em;
+  text-align: center;
+}
+
+.userDiv{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}

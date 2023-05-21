@@ -1,14 +1,38 @@
-<a class="btn" mat-button color="primary" (click)="logout()">Log out</a>
-
-<div *ngFor="let favBook of currentUser!.favouriteBooks!">
-  <a routerLink="/books/{{favBook.id}}">
-    Favourite: {{favBook.title}}
-  </a>
+<div class="userDiv" *ngIf="currentUser">
+  <mat-card>
+    <mat-card-title>{{currentUser.username}}</mat-card-title>
+    <mat-card-content>First Name: {{currentUser.firstName}}</mat-card-content>
+    <mat-card-content>Last Name: {{currentUser.lastName}}</mat-card-content>
+    <mat-card-content>Role: {{currentUser.role}}</mat-card-content>
+  </mat-card>
 </div>
-<div *ngFor="let userCheckout of currentUser!.checkouts!">
-  <a routerLink="/checkouts/{{userCheckout.id}}">
-    Checked out: {{userCheckout.borrowedBook.title}}
-  </a>
+
+<div class="container mat-elevation-z4" style="display: flex;">
+  <div *ngIf="currentUser!.favouriteBooks && currentUser!.favouriteBooks.length > 0" style="flex: 1;">
+    <mat-card>
+      <mat-card-title>Favourite books of {{currentUser!.username}}</mat-card-title>
+      <mat-card-content>
+        <mat-nav-list *ngIf="currentUser!.favouriteBooks! as books">
+          <a mat-list-item *ngFor="let book of books" [routerLink]="['/books', book.id]">
+            "{{book.title}}" by {{book.author}}
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div style="width: 10px;"></div>
+  <div *ngIf="currentUser!.checkouts && currentUser!.checkouts.length > 0" style="flex: 1;">
+    <mat-card>
+      <mat-card-title>Checkouts by {{currentUser!.username}}</mat-card-title>
+      <mat-card-content>
+        <mat-nav-list *ngIf="currentUser!.checkouts! as checkouts">
+          <a mat-list-item *ngFor="let checkout of checkouts" [routerLink]="['/checkouts', checkout.id]">
+            "{{checkout.borrowedBook.title}}" by {{checkout.borrowedBook.author}}
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
 

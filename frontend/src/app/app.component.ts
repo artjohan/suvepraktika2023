@@ -16,4 +16,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.userService.getCurrentUser();
   }
+
+  logout(): void {
+    this.userService.removeCurrentUser();
+    window.location.href = '/'
+  }
 }

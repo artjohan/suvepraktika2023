@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { HelperService } from '../../services/helper.service';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-book',
@@ -29,10 +30,14 @@ export class AddBookComponent implements OnInit {
   constructor(private bookService: BookService,
               private datePipe: DatePipe,
               private helperService: HelperService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.currentUser = this.userService.getCurrentUser();
+    if(!this.currentUser || this.currentUser.role === 'Reader') {
+      this.router.navigateByUrl('/');
+    }
   }
 
   submitForm() {
