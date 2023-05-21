@@ -35,17 +35,6 @@ export class BookService {
     return this.http.post<void>(url, book);
   }
 
-  updateBookStatus(bookId: string, newStatus: string, date: string): Observable<void> {
-    const url = this.baseUrl + '/book';
-    let params = new HttpParams()
-      .set('id', bookId)
-      .set('status', newStatus)
-    if(date) {
-      params = params.set('date', date);
-    }
-    return this.http.patch<void>(url, null, {params});
-  }
-
   deleteBook(bookId: string): Observable<void> {
     const url = this.baseUrl + '/book';
     const params = new HttpParams().set('id', bookId);

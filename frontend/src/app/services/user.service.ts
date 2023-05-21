@@ -12,7 +12,6 @@ export class UserService {
 
   getUserData(): { currentUser: User | null, allUsers: User[] } {
     const userData = localStorage.getItem(this.STORAGE_KEY);
-    //console.log(JSON.parse(userData!).currentUser)
     return userData ? JSON.parse(userData) : { currentUser: null, allUsers: [] };
   }
 

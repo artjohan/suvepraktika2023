@@ -21,7 +21,7 @@ export class AccountViewComponent implements OnInit{
 
   ngOnInit(): void {
     this.currentUser = this.userService.getCurrentUser();
-    if(!this.currentUser) {
+    if(!this.currentUser) { // redirect if not logged in
       this.router.navigateByUrl('/login');
     }
   }

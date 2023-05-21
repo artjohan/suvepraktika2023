@@ -35,24 +35,9 @@ export class CheckoutService {
     return this.http.post<void>(url, checkout);
   }
 
-  updateReturnedDate(checkoutId: string, returnedDate: string): Observable<void> {
-    const url = this.baseUrl + '/checkout';
-    const params = new HttpParams()
-      .set('id', checkoutId)
-      .set('date', returnedDate);
-    return this.http.patch<void>(url, null, {params});
-  }
-
   deleteCheckout(checkoutId: string): Observable<void> {
     const url = this.baseUrl + '/checkout';
     const params = new HttpParams().set('id', checkoutId);
     return this.http.delete<void>(url, {params});
   }
-
-  deleteCheckoutsByBookId(bookId: string): Observable<void> {
-    const url = this.baseUrl + '/checkout-by-book-id';
-    const params = new HttpParams().set('id', bookId);
-    return this.http.delete<void>(url, {params});
-  }
-
 }

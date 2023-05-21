@@ -49,7 +49,7 @@ public class Book {
     @Column
     private String comment;
 
-    @OneToMany(mappedBy = "borrowedBook")
+    @OneToMany(mappedBy = "borrowedBook", cascade = CascadeType.REFRESH, orphanRemoval = true)
     private List<CheckOut> checkOuts = new ArrayList<>();
 
     public UUID getId() {

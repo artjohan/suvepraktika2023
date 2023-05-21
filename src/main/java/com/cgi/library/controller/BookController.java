@@ -32,15 +32,6 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBook(bookId));
     }
 
-    @PatchMapping(value = "book")
-    public ResponseEntity<String> updateBookStatus(@RequestParam(value = "id") UUID bookId,
-                                                   @RequestParam(value = "status") BookStatus newStatus,
-                                                   @RequestParam(required = false) String date)
-    {
-        bookService.updateStatus(bookId, newStatus, date);
-        return ResponseEntity.ok("");
-    }
-
     @PostMapping(value = "book")
     public ResponseEntity<String> saveBook(@RequestBody BookDTO book) {
         bookService.saveBook(book);

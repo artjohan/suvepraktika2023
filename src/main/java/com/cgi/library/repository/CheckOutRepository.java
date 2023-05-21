@@ -15,5 +15,4 @@ public interface CheckOutRepository extends JpaRepository<CheckOut, UUID> {
     Page<CheckOut> findByReturnedDateIsNotNullAndBorrowedBookTitleContainingIgnoreCase(String searchTerm, Pageable pageable);
     Page<CheckOut> findByDueDateGreaterThanEqualAndReturnedDateIsNullAndBorrowedBookTitleContainingIgnoreCase(LocalDate currentDate, String searchTerm, Pageable pageable);
     Page<CheckOut> findByDueDateLessThanAndReturnedDateIsNullAndBorrowedBookTitleContainingIgnoreCase(LocalDate currentDate, String searchTerm, Pageable pageable);
-    void deleteAllByBorrowedBookId(UUID bookId);
 }

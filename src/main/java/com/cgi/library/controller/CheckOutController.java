@@ -1,6 +1,7 @@
 package com.cgi.library.controller;
 
 import com.cgi.library.model.CheckOutDTO;
+import com.cgi.library.model.CheckOutStatus;
 import com.cgi.library.service.CheckOutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,7 @@ public class CheckOutController {
     @GetMapping(value = "checkouts")
     public ResponseEntity<Page<CheckOutDTO>> getCheckOuts(Pageable pageable,
                                                           @RequestParam(required = false) String search,
-                                                          @RequestParam(required = false) String status) {
+                                                          @RequestParam(required = false) CheckOutStatus status) {
         Page<CheckOutDTO> checkouts = checkOutService.getCheckOuts(pageable, search, status);
         return ResponseEntity.ok(checkouts);
     }
@@ -36,21 +37,9 @@ public class CheckOutController {
         return ResponseEntity.ok("");
     }
 
-    @PatchMapping(value = "checkout")
-    public ResponseEntity<String> updateReturnedDate(@RequestParam(value = "id") UUID checkOutId, @RequestParam(value = "date") String date) {
-        checkOutService.updateReturnedDate(checkOutId, date);
-        return ResponseEntity.ok("");
-    }
-
     @DeleteMapping(value = "checkout")
     public ResponseEntity<String> deleteCheckOut(@RequestParam(value = "id") UUID checkOutId) {
         checkOutService.deleteCheckOut(checkOutId);
-        return ResponseEntity.ok("");
-    }
-
-    @DeleteMapping(value = "checkout-by-book-id")
-    public ResponseEntity<String> deleteCheckoutsByBookId(@RequestParam(value = "id") UUID bookId) {
-        checkOutService.deleteCheckoutsByBookId(bookId);
         return ResponseEntity.ok("");
     }
 }

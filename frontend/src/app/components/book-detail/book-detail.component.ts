@@ -53,9 +53,7 @@ export class BookDetailComponent implements OnInit {
 
   // deletes book from database, first removing all instances of the book from the checkouts table, then removing it entirely
   removeBook(book: Book): void {
-    this.checkoutService.deleteCheckoutsByBookId(book.id)
-      .pipe(
-       switchMap(() => this.bookService.deleteBook(book.id))).subscribe();
+    this.bookService.deleteBook(book.id).subscribe();
     this.removeBookRelatedCheckoutsFromAccounts(book);
     this.removeFavouriteBooksFromAccount(book);
   }
@@ -119,7 +117,7 @@ export class BookDetailComponent implements OnInit {
   openCheckoutDialog(book: Book): void {
     const dialogRef = this.dialog.open(BookDetailDialogComponent, {
           width: '400px',
-          data: book,
+          data: {book, isEdit: false},
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
@@ -138,6 +136,19 @@ export class BookDetailComponent implements OnInit {
       if(result) {
         this.removeBook(book);
         window.location.href = '/books'
+      }
+    });
+  }
+
+  // opens a dialog box asking for additional edit information
+  openEditDialog(book: Book): void {
+    const dialogRef = this.dialog.open(BookDetailDialogComponent, {
+          width: '400px',
+          data: {book, isEdit:true},
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.helperService.openSnackBar("Book successfully edited!");
       }
     });
   }

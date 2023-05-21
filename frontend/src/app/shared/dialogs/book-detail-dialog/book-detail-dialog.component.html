@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>Please fill this form to check out "{{data.title}}" by {{data.author}}</h2>
-<div mat-dialog-content>
-  <form #checkoutForm="ngForm">
+<h2 *ngIf="!data.isEdit" mat-dialog-title>Please fill this form to check out "{{data.book.title}}" by {{data.book.author}}</h2>
+<div *ngIf="!data.isEdit" mat-dialog-content>
+  <form  #checkoutForm="ngForm">
     <mat-form-field>
       <input matInput name="firstName" placeholder="First Name" required [(ngModel)]="firstName" [disabled]="currentUser!.role === 'Reader'">
       <mat-error *ngIf="firstName==''">First name is required</mat-error>
@@ -26,7 +26,33 @@
     </mat-form-field>
   </form>
 </div>
+
+<h2 *ngIf="data.isEdit" mat-dialog-title>Edit book details</h2>
+<div *ngIf="data.isEdit" mat-dialog-content>
+  <form  #editForm="ngForm">
+    <mat-form-field>
+      <input matInput name="title" placeholder="Title" required [(ngModel)]="data.book.title">
+      <mat-error *ngIf="data.book.title==''">Title is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput name="author" placeholder="Author" required [(ngModel)]="data.book.author">
+      <mat-error *ngIf="data.book.author==''">Author is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput name="genre" placeholder="Genre" required [(ngModel)]="data.book.genre">
+      <mat-error *ngIf="data.book.genre==''">Genre is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" name="year" placeholder="Year" required [(ngModel)]="data.book.year" max="2023" min="1000">
+      <mat-error *ngIf="data.book.year == null">year is required</mat-error>
+      <mat-error *ngIf="data.book.year != null && (data.book.year > 2023 || data.book.year < 1000)">Invalid year</mat-error>
+    </mat-form-field>
+  </form>
+</div>
 <div class="actionDiv" mat-dialog-actions>
   <button mat-button color="warn" (click)="closeDialog(false)">Cancel</button>
-  <button mat-button color="primary" (click)="submitForm()">Confirm</button>
+  <button mat-button color="primary" (click)="submitForm(data.isEdit)">Confirm</button>
 </div>

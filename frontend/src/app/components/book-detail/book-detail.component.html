@@ -11,6 +11,7 @@
     <mat-card-content *ngIf="book.dueDate">Due: {{book.dueDate}}</mat-card-content>
     <mat-card-actions>
       <button *ngIf="currentUser?.role=='Librarian'" (click)="openRemoveDialog(book)" mat-button>REMOVE</button>
+      <button *ngIf="currentUser?.role=='Librarian'" (click)="openEditDialog(book)" mat-button>EDIT</button>
       <button *ngIf="currentUser" (click)="favouriteToggle(book)" mat-button>{{favMsg}}</button>
       <button *ngIf="book.status==='AVAILABLE' && currentUser" (click)="openCheckoutDialog(book)" mat-button>BORROW</button>
     </mat-card-actions>

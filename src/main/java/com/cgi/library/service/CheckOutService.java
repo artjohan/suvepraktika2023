@@ -2,6 +2,7 @@ package com.cgi.library.service;
 
 import com.cgi.library.entity.CheckOut;
 import com.cgi.library.model.CheckOutDTO;
+import com.cgi.library.model.CheckOutStatus;
 import com.cgi.library.repository.CheckOutRepository;
 import com.cgi.library.util.ModelMapperFactory;
 import org.modelmapper.ModelMapper;
@@ -21,7 +22,7 @@ public class CheckOutService {
     @Autowired
     private CheckOutRepository checkOutRepository;
 
-    public Page<CheckOutDTO> getCheckOuts(Pageable pageable, String searchTerm, String status) {
+    public Page<CheckOutDTO> getCheckOuts(Pageable pageable, String searchTerm, CheckOutStatus status) {
         return status == null ? getCheckoutsBySearchTerm(pageable, searchTerm) : getCheckoutsByStatusAndSearchTerm(pageable, searchTerm, status);
     }
 
@@ -34,39 +35,25 @@ public class CheckOutService {
         checkOutRepository.save(ModelMapperFactory.getMapper().map(checkOutDTO, CheckOut.class));
     }
 
-    public void updateReturnedDate(UUID checkOutId, String date)  {
-        CheckOut checkOut = checkOutRepository.getOne(checkOutId);
-        checkOut.setReturnedDate(LocalDate.parse(date));
-        checkOutRepository.save(checkOut);
-    }
-
     public void deleteCheckOut(UUID checkOutId) {
         checkOutRepository.deleteById(checkOutId);
     }
-
-    @Transactional
-    public void deleteCheckoutsByBookId(UUID bookId) { checkOutRepository.deleteAllByBorrowedBookId(bookId); }
 
     private Page<CheckOutDTO> getCheckoutsBySearchTerm(Pageable pageable, String searchTerm) {
         ModelMapper modelMapper = ModelMapperFactory.getMapper();
         return checkOutRepository.findByBorrowedBookTitleContainingIgnoreCase(searchTerm, pageable).map(checkout -> modelMapper.map(checkout, CheckOutDTO.class));
     }
 
-    private Page<CheckOutDTO> getCheckoutsByStatusAndSearchTerm(Pageable pageable, String searchTerm, String status) {
+    private Page<CheckOutDTO> getCheckoutsByStatusAndSearchTerm(Pageable pageable, String searchTerm, CheckOutStatus status) {
         ModelMapper modelMapper = ModelMapperFactory.getMapper();
         LocalDate currentDate = LocalDate.now();
-        if(Objects.equals(status, "BORROWED"))  { // finds results where due date is later than or equal to the current date and returned date doesn't exist (book hasn't been returned), also filters by search term
-            return checkOutRepository.findByDueDateGreaterThanEqualAndReturnedDateIsNullAndBorrowedBookTitleContainingIgnoreCase(currentDate, searchTerm, pageable).map(checkout -> modelMapper.map(checkout, CheckOutDTO.class));
+        switch(status) {
+            case OVERDUE: // finds results where due date is earlier than the current date and returned date doesn't exist (book hasn't been returned), also filters by search term
+                return checkOutRepository.findByDueDateLessThanAndReturnedDateIsNullAndBorrowedBookTitleContainingIgnoreCase(currentDate, searchTerm, pageable).map(checkout -> modelMapper.map(checkout, CheckOutDTO.class));
+            case BORROWED: // finds results where due date is later than or equal to the current date and returned date doesn't exist (book hasn't been returned), also filters by search term
+                return checkOutRepository.findByDueDateGreaterThanEqualAndReturnedDateIsNullAndBorrowedBookTitleContainingIgnoreCase(currentDate, searchTerm, pageable).map(checkout -> modelMapper.map(checkout, CheckOutDTO.class));
+            default: // finds results where returned date isn't null, meaning the book has been returned, also filters by search term
+                return checkOutRepository.findByReturnedDateIsNotNullAndBorrowedBookTitleContainingIgnoreCase(searchTerm, pageable).map(checkout -> modelMapper.map(checkout, CheckOutDTO.class));
         }
-        if(Objects.equals(status, "OVERDUE")) { // finds results where due date is earlier than the current date and returned date doesn't exist (book hasn't been returned), also filters by search term
-            return checkOutRepository.findByDueDateLessThanAndReturnedDateIsNullAndBorrowedBookTitleContainingIgnoreCase(currentDate, searchTerm, pageable).map(checkout -> modelMapper.map(checkout, CheckOutDTO.class));
-        }
-        // finds results where returned date isn't null, meaning the book has been returned, also filters by search term
-        return checkOutRepository.findByReturnedDateIsNotNullAndBorrowedBookTitleContainingIgnoreCase(searchTerm, pageable).map(checkout -> modelMapper.map(checkout, CheckOutDTO.class));
-    }
-
-    private Page<CheckOutDTO> getAllCheckouts(Pageable pageable) {
-        ModelMapper modelMapper = ModelMapperFactory.getMapper();
-        return checkOutRepository.findAll(pageable).map(checkout -> modelMapper.map(checkout, CheckOutDTO.class));
     }
 }
