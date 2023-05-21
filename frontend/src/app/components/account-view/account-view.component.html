@@ -1,0 +1,14 @@
+<a class="btn" mat-button color="primary" (click)="logout()">Log out</a>
+
+<div *ngFor="let favBook of currentUser!.favouriteBooks!">
+  <a routerLink="/books/{{favBook.id}}">
+    Favourite: {{favBook.title}}
+  </a>
+</div>
+<div *ngFor="let userCheckout of currentUser!.checkouts!">
+  <a routerLink="/checkouts/{{userCheckout.id}}">
+    Checked out: {{userCheckout.borrowedBook.title}}
+  </a>
+</div>
+
+

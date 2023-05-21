@@ -1,9 +1,13 @@
 <!-- Navbar -->
 <mat-toolbar>
-  <a class="btn" mat-button color="primary" routerLink="/">Library</a>
-  <a class="btn" mat-button color="primary" routerLink="/checkouts">Checkouts</a>
-  <a class="btn" mat-button color="primary" routerLink="/add-book">Add a new book</a>
-  <a class="btn" mat-button color="primary" routerLink="/login">Log in</a>
+  <div class="btn-group">
+    <a class="btn" mat-button color="primary" routerLink="/">Library</a>
+    <a class="btn" mat-button color="primary" routerLink="/checkouts">Checkouts</a>
+    <a *ngIf="currentUser?.role=='Librarian'" class="btn" mat-button color="primary" routerLink="/add-book">Add a new book</a>
+    <a *ngIf="!currentUser" class="btn" mat-button color="primary" routerLink="/login">Log in</a>
+    <a *ngIf="!currentUser" class="btn" mat-button color="primary" routerLink="/register">Register</a>
+    <a *ngIf="currentUser" class="btn" mat-button color="primary" routerLink="/account">Account</a>
+  </div>
 </mat-toolbar>
 
 <!-- Body -->

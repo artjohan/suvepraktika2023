@@ -9,6 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from '../../shared/dialogs/confirmation-dialog/confirmation-dialog.component'
 import { HelperService } from '../../services/helper.service';
+import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-checkout-detail',
@@ -24,10 +26,12 @@ export class CheckoutDetailComponent implements OnInit {
     private datePipe: DatePipe,
     private dialog: MatDialog,
     private router: Router,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private userService: UserService
   ) {}
 
   checkout$!: Observable<Checkout>;
+  currentUser: User | null = null;
   status: string = "";
   statusColor: string = "green";
 
@@ -39,6 +43,7 @@ export class CheckoutDetailComponent implements OnInit {
         this.setStatus(checkout);
       })
     );
+    this.currentUser = this.userService.getCurrentUser();
   }
 
   removeCheckout(checkout: Checkout): void {

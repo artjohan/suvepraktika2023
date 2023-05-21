@@ -2,12 +2,12 @@
 <div mat-dialog-content>
   <form #checkoutForm="ngForm">
     <mat-form-field>
-      <input matInput name="firstName" placeholder="First Name" required [(ngModel)]="firstName">
+      <input matInput name="firstName" placeholder="First Name" required [(ngModel)]="firstName" [disabled]="currentUser!.role === 'Reader'">
       <mat-error *ngIf="firstName==''">First name is required</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput name="lastName" placeholder="Last Name" required [(ngModel)]="lastName">
+      <input matInput name="lastName" placeholder="Last Name" required [(ngModel)]="lastName" [disabled]="currentUser!.role === 'Reader'">
       <mat-error *ngIf="lastName==''">Last name is required</mat-error>
     </mat-form-field>
 

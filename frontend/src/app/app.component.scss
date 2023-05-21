@@ -1,9 +1,18 @@
 .mat-toolbar-row, .mat-toolbar-single-row {
   height: 50px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .btn {
   height: 50px;
-  width: 25%;
+  flex-grow: 1;
+  text-align: center;
 }

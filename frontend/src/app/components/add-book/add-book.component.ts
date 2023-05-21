@@ -1,18 +1,22 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Book } from '../../models/book';
 import { BookService } from '../../services/book.service';
 import { v4 as uuidv4 } from 'uuid';
 import { HelperService } from '../../services/helper.service';
+import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
   styleUrls: ['./add-book.component.css']
 })
-export class AddBookComponent {
+export class AddBookComponent implements OnInit {
   @ViewChild('bookForm', { static: false }) bookForm?: NgForm;
+
+  currentUser: User | null = null;
 
   input = {
       title: '',
@@ -24,7 +28,12 @@ export class AddBookComponent {
 
   constructor(private bookService: BookService,
               private datePipe: DatePipe,
-              private helperService: HelperService) { }
+              private helperService: HelperService,
+              private userService: UserService) { }
+
+  ngOnInit(): void {
+    this.currentUser = this.userService.getCurrentUser();
+  }
 
   submitForm() {
     if(this.bookForm!.valid) {

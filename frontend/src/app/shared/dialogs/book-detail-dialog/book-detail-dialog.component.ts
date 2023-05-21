@@ -7,6 +7,8 @@ import { Book } from '../../../models/book';
 import { BookService } from '../../../services/book.service';
 import { CheckoutService } from '../../../services/checkout.service';
 import { Checkout } from '../../../models/checkout';
+import { User } from '../../../models/user';
+import { UserService } from '../../../services/user.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -17,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class BookDetailDialogComponent implements OnInit{
   @ViewChild('checkoutForm', { static: false }) checkoutForm?: NgForm;
 
+  currentUser: User | null = null;
   minDate: Date = new Date();
   maxDate: Date = new Date();
 
@@ -29,16 +32,22 @@ export class BookDetailDialogComponent implements OnInit{
               private dateAdapter: DateAdapter<Date>,
               private datePipe: DatePipe,
               private bookService: BookService,
-              private checkoutService: CheckoutService) { }
+              private checkoutService: CheckoutService,
+              private userService: UserService) { }
 
 
   ngOnInit(): void {
     this.setBoundaryDates(); // setting minimum and maximum dates for the date picker
     this.dueDate = this.dateAdapter.addCalendarDays(this.dueDate, 1); // setting the dueDate default value to the minimum date
+    this.currentUser = this.userService.getCurrentUser();
+    if(this.currentUser!.role === "Reader") { // set default values to the user name if they're logged in
+      this.firstName = this.currentUser!.firstName;
+      this.lastName = this.currentUser!.lastName;
+    }
   }
 
   submitForm(): void {
-    if(this.checkoutForm!.valid) {
+    if(this.checkoutForm!.valid || this.currentUser!.role === "Reader") {
       this.addCheckout();
       this.updateBookStatus();
       this.closeDialog(true);
@@ -60,6 +69,10 @@ export class BookDetailDialogComponent implements OnInit{
       dueDate: this.datePipe.transform(this.dueDate, 'yyyy-MM-dd')!,
     }
     this.checkoutService.saveCheckout(resultCheckout).subscribe();
+    if(this.currentUser!.role) {
+      this.currentUser!.checkouts! ? this.currentUser!.checkouts.push(resultCheckout) : this.currentUser!.checkouts = [resultCheckout];
+      this.userService.updateCurrentUserData(this.currentUser);
+    }
   }
 
   // updates the status of the book from "AVAILABLE" to "BORROWED", also adds the due date to the table

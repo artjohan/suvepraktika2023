@@ -7,6 +7,7 @@ import { CheckoutDetailComponent } from './components/checkout-detail/checkout-d
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { AccountViewComponent } from './components/account-view/account-view.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'books', pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'add-book', component: AddBookComponent},
   {path: 'register', component: RegisterFormComponent},
   {path: 'login', component: LoginFormComponent},
+  {path: 'account', component: AccountViewComponent},
 ];
 
 @NgModule({

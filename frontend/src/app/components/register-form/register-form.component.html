@@ -1,47 +1,49 @@
-<div style="text-align: center">
-  <h1 class="title">Register to the library</h1>
-</div>
+<ng-container *ngIf="!currentUser">
+  <div style="text-align: center">
+    <h1 class="title">Register to the library</h1>
+  </div>
 
-<div class="container">
-  <form [formGroup]="userForm" (ngSubmit)="saveUser()" class="form">
-    <mat-form-field class="form-field">
-      <input matInput placeholder="Username" formControlName="username" maxlength="15">
-      <mat-error *ngIf="userForm.get('username')?.hasError('required')">Username is required</mat-error>
-      <mat-error *ngIf="userForm.get('username')?.hasError('minlength')">Invalid Username (min 3 characters)</mat-error>
-      <mat-error *ngIf="userForm.get('username')?.hasError('usernameUnavailable')">Username is unavailable</mat-error>
-      <mat-error *ngIf="userForm.get('username')?.hasError('usernameInvalid')">Username is invalid (no spaces allowed)</mat-error>
-    </mat-form-field>
+  <div class="container">
+    <form [formGroup]="userForm" (ngSubmit)="saveUser()" class="form">
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Username" formControlName="username" maxlength="15">
+        <mat-error *ngIf="userForm.get('username')?.hasError('required')">Username is required</mat-error>
+        <mat-error *ngIf="userForm.get('username')?.hasError('minlength')">Invalid Username (min 3 characters)</mat-error>
+        <mat-error *ngIf="userForm.get('username')?.hasError('usernameUnavailable')">Username is unavailable</mat-error>
+        <mat-error *ngIf="userForm.get('username')?.hasError('usernameInvalid')">Username is invalid (no spaces allowed)</mat-error>
+      </mat-form-field>
 
-    <mat-form-field class="form-field">
-      <input matInput placeholder="First Name" formControlName="firstName">
-      <mat-error *ngIf="userForm.get('firstName')?.hasError('required')">First Name is required</mat-error>
-    </mat-form-field>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="First Name" formControlName="firstName">
+        <mat-error *ngIf="userForm.get('firstName')?.hasError('required')">First Name is required</mat-error>
+      </mat-form-field>
 
-    <mat-form-field class="form-field">
-      <input matInput placeholder="Last Name" formControlName="lastName">
-      <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">Last Name is required</mat-error>
-    </mat-form-field>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Last Name" formControlName="lastName">
+        <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">Last Name is required</mat-error>
+      </mat-form-field>
 
-    <mat-form-field class="form-field">
-      <input matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" maxlength="20">
-      <mat-icon style="cursor: pointer;" matSuffix (click)="showPassword = !showPassword">visibility</mat-icon>
-      <mat-error *ngIf="userForm.get('password')?.hasError('required')">Password is required</mat-error>
-      <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">Invalid Password (min 6 characters)</mat-error>
-    </mat-form-field>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'text' : 'password'" maxlength="20">
+        <mat-icon style="cursor: pointer;" matSuffix (click)="showPassword = !showPassword">visibility</mat-icon>
+        <mat-error *ngIf="userForm.get('password')?.hasError('required')">Password is required</mat-error>
+        <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">Invalid Password (min 6 characters)</mat-error>
+      </mat-form-field>
 
-    <mat-form-field class="form-field">
-      <mat-label>Role</mat-label>
-      <mat-select formControlName="role">
-        <mat-option [value]="'Reader'">
-          Reader
-        </mat-option>
-        <mat-option [value]="'Librarian'">
-          Librarian
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="userForm.get('role')?.hasError('required')">Role is required</mat-error>
-    </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option [value]="'Reader'">
+            Reader
+          </mat-option>
+          <mat-option [value]="'Librarian'">
+            Librarian
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="userForm.get('role')?.hasError('required')">Role is required</mat-error>
+      </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Register</button>
-  </form>
-</div>
+      <button mat-raised-button color="primary" type="submit">Register</button>
+    </form>
+  </div>
+</ng-container>

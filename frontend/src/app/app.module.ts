@@ -21,6 +21,7 @@ import { AddBookComponent } from './components/add-book/add-book.component';
 import { ConfirmationDialogComponent } from './shared/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { AccountViewComponent } from './components/account-view/account-view.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
     ConfirmationDialogComponent,
     RegisterFormComponent,
     LoginFormComponent,
+    AccountViewComponent,
   ],
   imports: [
     BrowserModule,

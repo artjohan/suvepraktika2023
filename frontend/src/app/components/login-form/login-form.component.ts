@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -14,12 +15,13 @@ export class LoginFormComponent implements OnInit {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  currentUser?: User | null;
-
+  currentUser: User | null = null;
   showPassword: boolean = false;
   passwordErr: string = "Password is required";
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService) { }
+  constructor(private formBuilder: FormBuilder,
+              private userService: UserService,
+              private router: Router,) { }
 
   usernameExistenceValidator() {
     return (control: AbstractControl) => {
@@ -28,17 +30,20 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.currentUser)
+    this.currentUser = this.userService.getCurrentUser();
+    if(this.currentUser) {
+      this.router.navigateByUrl('/account');
+    }
   }
 
   login(): void {
     if(this.userForm.valid) {
-      this.currentUser = this.userService.verifyUser(this.userForm.value.username, this.userForm.value.password)
-      if(this.currentUser) {
-        console.log(this.currentUser)
+      const user = this.userService.verifyUser(this.userForm.value.username, this.userForm.value.password)
+      if(user) {
+        this.userService.setCurrentUser(user);
+        window.location.href = '/'
       } else {
-        console.log(this.currentUser)
-        this.passwordErr = "Incorrect password"
+        this.passwordErr = "Incorrect password";
         this.userForm.get("password")?.reset();
       }
     }

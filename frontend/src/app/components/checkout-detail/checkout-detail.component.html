@@ -7,7 +7,7 @@
     <mat-card-content>Status:</mat-card-content>
     <h1 style="color: {{statusColor}};">{{status}}</h1>
     <mat-card-actions>
-      <button (click)="openRemoveDialog(checkout)" mat-button>REMOVE</button>
+      <button *ngIf="this.currentUser!.role === 'Librarian'" (click)="openRemoveDialog(checkout)" mat-button>REMOVE</button>
       <button *ngIf="status.slice(0, 8) != 'RETURNED'" (click)="openReturnDialog(checkout)" mat-button>RETURN</button>
     </mat-card-actions>
   </mat-card>
