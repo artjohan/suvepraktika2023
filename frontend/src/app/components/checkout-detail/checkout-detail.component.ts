@@ -5,7 +5,7 @@ import { BookService } from '../../services/book.service';
 import { Checkout } from '../../models/checkout';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from '../../shared/dialogs/confirmation-dialog/confirmation-dialog.component'
 import { HelperService } from '../../services/helper.service';
@@ -25,13 +25,13 @@ export class CheckoutDetailComponent implements OnInit {
     private bookService: BookService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
-    private router: Router,
     private helperService: HelperService,
     private userService: UserService
   ) {}
 
   checkout$!: Observable<Checkout>;
   currentUser: User | null = null;
+  isUserCheckout: boolean = false;
   status: string = "";
   statusColor: string = "green";
 
@@ -41,13 +41,32 @@ export class CheckoutDetailComponent implements OnInit {
       switchMap(id => this.checkoutService.getCheckout(id)),
       tap(checkout => {
         this.setStatus(checkout);
+        this.isUserCheckout = this.checkUserCheckout(checkout);
       })
     );
+
     this.currentUser = this.userService.getCurrentUser();
   }
 
   removeCheckout(checkout: Checkout): void {
     this.checkoutService.deleteCheckout(checkout.id).subscribe();
+    this.removeCheckoutFromAccounts(checkout);
+  }
+
+  removeCheckoutFromAccounts(checkout: Checkout): void {
+    const users = this.userService.getUserData();
+
+    // removes checkout from the current user's information if it exists
+    if(this.currentUser!.checkouts) {
+       this.currentUser!.checkouts = this.currentUser!.checkouts!.filter(userCheckout => userCheckout.id !== checkout.id);
+    }
+    // removes checkout from all the users informations if it exists
+    users.allUsers.forEach((user) => {
+      if(user.checkouts) {
+        user.checkouts = user.checkouts.filter((userCheckout) => userCheckout.id !== checkout.id);
+      }
+    })
+    this.userService.setUserData({ currentUser: this.currentUser, allUsers: users.allUsers });
   }
 
   // sets the status of the checkout by comparing dates
@@ -64,6 +83,13 @@ export class CheckoutDetailComponent implements OnInit {
         this.statusColor = "orange";
       }
     }
+  }
+
+  checkUserCheckout(checkout: Checkout): boolean {
+    if(this.currentUser?.checkouts) {
+      return this.currentUser.checkouts.find(userCheckout => userCheckout.id === checkout.id) ? true : false
+    }
+    return false;
   }
 
   // calculates how many days are between 2 dates
@@ -90,8 +116,7 @@ export class CheckoutDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.removeCheckout(checkout);
-        this.helperService.openSnackBar("Checkout successfully removed!");
-        this.router.navigateByUrl('/checkouts');
+        window.location.href = '/checkouts'
       }
     });
   }

@@ -5,7 +5,7 @@ import { CheckoutService } from '../../services/checkout.service';
 import { Book } from '../../models/book';
 import { User } from '../../models/user';
 import { Observable } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { BookDetailDialogComponent } from '../../shared/dialogs/book-detail-dialog/book-detail-dialog.component';
@@ -27,7 +27,6 @@ export class BookDetailComponent implements OnInit {
     private checkoutService: CheckoutService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
-    private router: Router,
     private helperService: HelperService,
     private userService: UserService
   ) { }
@@ -57,6 +56,38 @@ export class BookDetailComponent implements OnInit {
     this.checkoutService.deleteCheckoutsByBookId(book.id)
       .pipe(
        switchMap(() => this.bookService.deleteBook(book.id))).subscribe();
+    this.removeBookRelatedCheckoutsFromAccounts(book);
+    this.removeFavouriteBooksFromAccount(book);
+  }
+
+  removeBookRelatedCheckoutsFromAccounts(book: Book): void {
+    const users = this.userService.getUserData();
+    // removes checkouts related to the removed book from the current user's information if they exist
+    if(this.currentUser!.checkouts) {
+       this.currentUser!.checkouts = this.currentUser!.checkouts!.filter(userCheckout => userCheckout.borrowedBook.id !== book.id);
+    }
+    // removes checkouts related to the removed book from all the users information if they exist
+    users.allUsers.forEach((user) => {
+      if(user.checkouts) {
+        user.checkouts = user.checkouts.filter((userCheckout) => userCheckout.borrowedBook.id !== book.id);
+      }
+    })
+    this.userService.setUserData({ currentUser: this.currentUser, allUsers: users.allUsers });
+  }
+
+  removeFavouriteBooksFromAccount(book: Book): void {
+    const users = this.userService.getUserData();
+    // removes book from the current user's favourite books
+    if(this.currentUser!.favouriteBooks) {
+       this.currentUser!.favouriteBooks = this.currentUser!.favouriteBooks!.filter(favouriteBook => favouriteBook.id !== book.id);
+    }
+    // removes book from all the users' favourite books
+    users.allUsers.forEach((user) => {
+      if(user.favouriteBooks) {
+        user.favouriteBooks = user.favouriteBooks.filter((favouriteBook) => favouriteBook.id !== book.id);
+      }
+    })
+    this.userService.setUserData({ currentUser: this.currentUser, allUsers: users.allUsers });
   }
 
   // adds/removes book from favourites
@@ -106,8 +137,7 @@ export class BookDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.removeBook(book);
-        this.helperService.openSnackBar("Book successfully removed!");
-        this.router.navigateByUrl('/books');
+        window.location.href = '/books'
       }
     });
   }

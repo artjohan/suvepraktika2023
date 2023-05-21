@@ -10,13 +10,13 @@ export class UserService {
 
   constructor() { }
 
-  private getUserData(): { currentUser: User | null, allUsers: User[] } {
+  getUserData(): { currentUser: User | null, allUsers: User[] } {
     const userData = localStorage.getItem(this.STORAGE_KEY);
-    console.log(JSON.parse(userData!).currentUser)
+    //console.log(JSON.parse(userData!).currentUser)
     return userData ? JSON.parse(userData) : { currentUser: null, allUsers: [] };
   }
 
-  private setUserData(data: { currentUser: User | null, allUsers: User[] }): void {
+  setUserData(data: { currentUser: User | null, allUsers: User[] }): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
   }
 
@@ -56,7 +56,8 @@ export class UserService {
 
   setCurrentUser(user: User | null): void {
     const { allUsers } = this.getUserData();
-    this.setUserData({ currentUser: user, allUsers });
+    const matchedUser = allUsers.find(userSearch => userSearch.id === user!.id)!;
+    this.setUserData({ currentUser: matchedUser, allUsers });
   }
 
   getCurrentUser(): User | null {
@@ -65,8 +66,10 @@ export class UserService {
   }
 
   removeCurrentUser(): void {
-    var users = this.getUserData();
-    users.currentUser = null;
-    this.setUserData(users);
+    const users = this.getUserData();
+    // save the current user into the allUsers array
+    const allUsers = users.allUsers.filter(user => user.id !== users.currentUser!.id);
+    allUsers.push(users.currentUser!);
+    this.setUserData({ currentUser: null, allUsers });
   }
 }
