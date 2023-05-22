@@ -1,3 +1,11 @@
+.mat-mdc-row .mat-mdc-cell {
+  cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  background: grey;
+}
+
 mat-card {
   padding: 30px;
   height: 100%;
@@ -20,4 +28,11 @@ mat-card-title {
   justify-content: center;
   align-items: center;
   margin-bottom: 50px;
+}
+
+h1 {
+  font-size:50px;
+  margin-bottom: 30px;
+  line-height: 1em;
+  text-align: center;
 }
